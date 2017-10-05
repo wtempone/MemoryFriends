@@ -31,7 +31,7 @@
     "angularfire2": "^5.0.0-rc.1",
     "brmasker-ionic-3": "0.0.8",
     "cordova-plugin-facebook4": "^1.9.1",
-    "firebase": "^4.5.0",
+    "firebase": "^3.9.0",
     "ionic-angular": "3.7.1",
     "ionicons": "3.0.0",
     "ngx-facebook": "^2.4.0",

@@ -15,6 +15,28 @@ import { User } from '../providers/providers';
 import { Api } from '../providers/providers';
 import { MyApp } from './app.component';
 
+// Configuration Firebase
+import { FacebookModule } from 'ngx-facebook';
+//Modulos Firebase
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AuthServiceProvider } from "../providers/auth-service";
+import { Facebook } from "@ionic-native/facebook";
+
+// AF2 Settings
+export const firebaseConfig = {
+  apiKey: "AIzaSyAh3n6hFmwk9d6ydUEr8RXf8bFSX36vH8E",
+  authDomain: "memory-friends.firebaseapp.com",
+  databaseURL: "https://memory-friends.firebaseio.com",
+  projectId: "memory-friends",
+  storageBucket: "memory-friends.appspot.com",
+  messagingSenderId: "518522696281"
+};
+
+
+
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -51,7 +73,11 @@ export function provideSettings(storage: Storage) {
       }
     }),
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule, 
+    AngularFireAuthModule,
+    FacebookModule.forRoot()    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -66,7 +92,9 @@ export function provideSettings(storage: Storage) {
     StatusBar,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    AuthServiceProvider,
+    Facebook    
   ]
 })
 export class AppModule { }
