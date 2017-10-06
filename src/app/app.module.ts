@@ -1,3 +1,4 @@
+
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -23,6 +24,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthServiceProvider } from "../providers/auth-service";
 import { Facebook } from "@ionic-native/facebook";
+import { UserService, GameSessionService } from '../providers/database/database-providers';
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -33,9 +35,6 @@ export const firebaseConfig = {
   storageBucket: "memory-friends.appspot.com",
   messagingSenderId: "518522696281"
 };
-
-
-
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -78,6 +77,7 @@ export function provideSettings(storage: Storage) {
     AngularFireDatabaseModule, 
     AngularFireAuthModule,
     FacebookModule.forRoot()    
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -94,7 +94,9 @@ export function provideSettings(storage: Storage) {
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthServiceProvider,
-    Facebook    
+    Facebook,
+    UserService,
+    GameSessionService
   ]
 })
 export class AppModule { }

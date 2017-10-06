@@ -1,5 +1,3 @@
-import { UserService } from './database/services/users';
-//import { User } from './database/models/user';
 import { Platform, ToastController } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook'
 
@@ -7,7 +5,8 @@ import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import { Http } from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UserService, User } from './database/database-providers';
 
 @Injectable()
 export class AuthServiceProvider {
@@ -19,7 +18,7 @@ export class AuthServiceProvider {
     private platform: Platform,
     private facebook: Facebook,
     private toastController: ToastController,
-    private http: Http,
+    private http: HttpClient,
     public userService: UserService
     ) { }
 
@@ -27,7 +26,6 @@ export class AuthServiceProvider {
     if (this.platform.is('cordova')) {
       return this.facebook.login(['email', 'public_profile']).then(res => {
         this.facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
-        //return this.saveUserFacebook();
         return this.afAuth.auth.signInWithCredential(this.facebookCredential);
       });
     } else {

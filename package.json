@@ -28,8 +28,7 @@
     "@ionic/storage": "2.0.1",
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
-    "angularfire2": "^5.0.0-rc.1",
-    "brmasker-ionic-3": "0.0.8",
+    "angularfire2": "^4.0.0-rc.1",
     "cordova-plugin-facebook4": "^1.9.1",
     "firebase": "^3.9.0",
     "ionic-angular": "3.7.1",
@@ -49,7 +48,7 @@
     "plugins": {
       "cordova-plugin-facebook4": {
         "APP_ID": "145387609344354",
-        "APP_NAME": "Memo­r­y­F­r­i­ends"
+        "APP_NAME": "Memory­Friends"
       }
     }
   }

@@ -84,6 +84,6 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.11" />
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
         <variable name="APP_ID" value="145387609344354" />
-        <variable name="APP_NAME" value="Memo­r­y­F­r­i­ends" />
+        <variable name="APP_NAME" value="Memory­Friends" />
     </plugin>
 </widget>
