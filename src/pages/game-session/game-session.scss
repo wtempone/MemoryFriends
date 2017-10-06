@@ -1,104 +1,88 @@
 page-game-session {
 
-  .splash-info {
-    position: relative;
-    z-index: 2;
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .splash-logo {
-    margin: auto;
-    background: url('../assets/img/appicon.png') repeat transparent;
-    background-size: 100%;
-    width: 128px;
-    height: 128px;
-  }
-  .splash-intro {
-    font-size: 20px;
-    line-height: 60px;
-    font-weight: bold;
-    max-width: 80%;
-    margin: auto;
-  }
-  button.login {
-    margin-top: 35px;
-    background-color: white;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-    color: #333;
-
-    &.activated {
-      background-color: rgb(220, 220, 220);
-    }
-  }
-  .stars {
-    line-height: 0px;    
-    font-size: 10px;  
-    text-align: center;
-  }
-
-  .profile-image-wrapper {
-    z-index: 10;
-    text-align: left;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: transparentize( color($colors, primary), 0.5);
-    margin: auto;
-    border: 1px solid color($colors, primary);
-    border-radius: 10px 10px 10px 10px;
-    display: table;
-    width: 90%;
-    padding: 10px;
-
-    .profile-image {
-      width:  75px;
-      height: 75px;
-      border-radius: 50%; 
-      margin-right: 10px;
-      border: 1px solid color($colors, primary);
-      display: inline-table;
-      float: left;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .profile-image-placeholder {
-      margin-left: 10px;
-      display: inline-table;
-      float: left;
-      background-color: #eee;
-      width: 75px;
-      height: 75px;
-      border-radius: 50%;
-
-      font-size: 12px;
-
-      ion-icon {
-        font-size: 44px;
-        margin-bottom: -10px;
-        margin-top: 10px;
+  // Chat --- inicio
+  .chatBubble{
+    
+      //position: relative;
+    
+      // :last-child {
+      //   margin-bottom: 10px;
+      // }
+    
+      img.profile-pic {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 10px;
+      }
+    
+      img.profile-pic.left {
+        left: 10px;
+      }
+    
+      img.profile-pic.right {
+        right: 10px;
+      }
+    
+      .message {
+        font-size: medium;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+      }
+    
+      .message-detail {
+        white-space: nowrap;
+        font-size: 14px;
+      }
+    
+      .chat-bubble {
+        border-radius: 5px;
+        display: inline-block;
+        padding: 10px 18px;
+        position: relative;
+        margin: 10px;
+        max-width: 80%;
+      }
+    
+      .chat-bubble:before {
+        content: "\00a0";
+        display: block;
+        height: 16px;
+        width: 9px;
+        position: absolute;
+        bottom: -7.5px;
+      }
+    
+      .chat-bubble.left {
+        background-color: map-get($chat-bubble, background-left);
+        float: left;
+        margin-left: 45px;
+      }
+    
+      .chat-bubble.left:before {
+        background-color: map-get($chat-bubble, background-left);
+        left: 10px;
+        -webkit-transform: rotate(70deg) skew(5deg);
+      }
+    
+      .chat-bubble.right {
+        background-color: map-get($chat-bubble, background-right);
+        color: #000;
+        float: right;
+        margin-right: 45px;
+      }
+    
+      .chat-bubble.right:before {
+        background-color: map-get($chat-bubble, background-right);
+        right: 10px;
+        -webkit-transform: rotate(118deg) skew(-5deg);
+      }
+    
+      .chat-bubble.right a.autolinker {
+        color: #000;
+        font-weight: bold;
       }
     }
-
-
-    .profile-points {
-      display: inline-table;
-      float: right;
-      background-color: transparentize( color($colors, primary), 0.8);
-      border: 1px solid color($colors, primary);
-      width: 50px;
-      height: 50px;
-      text-align: center;
-      border-radius: 50%;
-
-      font-size: 10px;
-
-      ion-icon {
-        font-size: 33px;
-        margin-bottom: -15px;
-        margin-top: 5px;
-      }
-    }
-  }
+  // Chat -- fim
 }

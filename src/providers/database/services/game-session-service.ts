@@ -8,7 +8,6 @@ import { TranslateService } from '@ngx-translate/core';
 export class GameSessionService {
   basePath: string = '/game-sessions';
   data;
-  currentUser: any;
 
   constructor(
     public db: AngularFireDatabase,
@@ -18,14 +17,24 @@ export class GameSessionService {
   ) {
     this.data = this.db.list(this.basePath)
   }
-/*
   getList(query = {}) {
     return this.db.list(this.basePath);
   }
 
   get(key: string){
     const itemPath = `${this.basePath}/${key}`;
+    return this.db.object(itemPath).take(1);
+  }
+
+  observe(key: string){
+    const itemPath = `${this.basePath}/${key}`;
     return this.db.object(itemPath);
+  }
+
+
+  set(key:string, rec: GameSession) {
+    const itemPath = `${this.basePath}/${key}`;
+    return this.db.object(itemPath).set(rec);
   }
 
   create(rec) {
@@ -48,5 +57,5 @@ export class GameSessionService {
     const toast = this.toast.create({ message: error, duration: 3000, position: 'top' });
     toast.present();
   }
-*/
+
 }

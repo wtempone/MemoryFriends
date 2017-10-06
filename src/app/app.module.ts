@@ -20,11 +20,11 @@ import { MyApp } from './app.component';
 import { FacebookModule } from 'ngx-facebook';
 //Modulos Firebase
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthServiceProvider } from "../providers/auth-service";
 import { Facebook } from "@ionic-native/facebook";
-import { UserService, GameSessionService } from '../providers/database/database-providers';
+import { GameSessionService, UserService } from '../providers/database/database-providers';
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -36,19 +36,13 @@ export const firebaseConfig = {
   messagingSenderId: "518522696281"
 };
 
-// The translate loader needs to know where to load i18n files
-// in Ionic's static asset pipeline.
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 export function provideSettings(storage: Storage) {
-  /**
-   * The Settings provider takes a set of default settings for your app.
-   *
-   * You can add new settings options at any time. Once the settings are saved,
-   * these values will not overwrite the saved values (this can be done manually if desired).
-   */
+
   return new Settings(storage, {
     option1: true,
     option2: 'Ionitron J. Framework',
@@ -76,8 +70,7 @@ export function provideSettings(storage: Storage) {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule, 
     AngularFireAuthModule,
-    FacebookModule.forRoot()    
-    
+    FacebookModule.forRoot()       
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -91,12 +84,14 @@ export function provideSettings(storage: Storage) {
     SplashScreen,
     StatusBar,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
-    // Keep this to enable Ionic's runtime error handling during development
+
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthServiceProvider,
     Facebook,
+    GameSessionService,
     UserService,
-    GameSessionService
+    AngularFireDatabase    
   ]
 })
+
 export class AppModule { }

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from "angularfire2/database";
-import { User, Invite } from '../database-providers';
+import { User, Invite, GameSession, Player } from '../database-providers';
 import { ToastController, AlertController, App } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { GameSessionService } from './game-session-service';
 
 @Injectable()
 export class UserService {
@@ -15,8 +16,8 @@ export class UserService {
     private toast: ToastController,
     private translate: TranslateService,
     private alertCtrl: AlertController,
-    //private gameSessionSrvc: GameSessionService,
-    protected app: App  
+    private gameSessionSrvc: GameSessionService,
+    protected app: App
   ) {
     this.data = this.db.list(this.basePath)
   }
@@ -27,7 +28,7 @@ export class UserService {
 
   get(key: string) {
     const itemPath = `${this.basePath}/${key}`;
-    return this.db.object(itemPath);
+    return this.db.object(itemPath).take(1);
   }
 
   set(rec: User) {
@@ -43,14 +44,7 @@ export class UserService {
 
   startListenerInvites() {
     const itemPath = `${this.basePath}/${this.currentUser.facebookId}/invites`;
-    /*    
-    let options:FirebaseListFactoryOpts;
-    
-    this.invites = this.db.object('users/'+this.dbUser.facebookId + "/invites" );
-    this.invites.on('child_added', (data) => {
-      this.receiveInvite(data.val());
-    });*/
-    
+    this.db.list(itemPath).$ref.on('child_added', newInvite => this.receiveInvite(newInvite.val()));
   }
 
   update(key: string, value: any): void {
@@ -71,11 +65,11 @@ export class UserService {
   }
 
   removeEnvite(invite: Invite) {
-    const itemPath = `${this.basePath}/${invite.toUser.facebookId}/invites/${invite.fromUser.facebookId}`;   
+    const itemPath = `${this.basePath}/${invite.toUser.facebookId}/invites/${invite.fromUser.facebookId}`;
     this.db.object(itemPath).remove()
       .catch(error => this.handleError(error));
   }
-  /*
+
   receiveInvite(invite: Invite) {
 
     this.translate.get([
@@ -96,6 +90,9 @@ export class UserService {
               text: values.NOT_NOW_BUTTON,
               handler: () => {
                 this.removeEnvite({ toUser: this.currentUser, fromUser: invite.fromUser });
+                if (invite.gameSessionId) {
+                  this.gameSessionSrvc.delete(invite.gameSessionId);
+                }
               }
             },
             {
@@ -107,7 +104,8 @@ export class UserService {
 
                 if (!invite.gameSessionId) {
                   var player = new Player();
-                  gameSession.addPlayer(player);
+                  player.user = this.currentUser;
+                  gameSession.players.push(player);
                   this.gameSessionSrvc.create(gameSession).then(
                     gameSession => {
                       let inviteResponse: Invite = {
@@ -119,20 +117,34 @@ export class UserService {
                     }
                   );
                 } else {
-                  this.gameSessionSrvc.get(invite.gameSessionId).subscribe(
-                    gameSession => {
-                      if (!invite.confirm) {
-                        let inviteResponse: Invite = {
-                          fromUser: this.currentUser,
-                          toUser: invite.fromUser,
-                          gameSessionId: invite.gameSessionId,
-                          confirm: true
-                        };
-                        this.sendEnvite(inviteResponse).catch(error => this.handleError(error));
+                  if (!invite.confirm) {
+                    this.gameSessionSrvc.get(invite.gameSessionId).subscribe(
+                      data => {
+                        let gameSession: GameSession = data;
+                        var player = new Player();
+                        player.user = this.currentUser;
+                        gameSession.players.push(player);
+                        let keyParse: any = gameSession;
+                        this.gameSessionSrvc.set(keyParse.$key, gameSession).then(
+                          () => {
+                            let inviteResponse: Invite = {
+                              fromUser: this.currentUser,
+                              toUser: invite.fromUser,
+                              gameSessionId: invite.gameSessionId,
+                              confirm: true
+                            };
+                            this.sendEnvite(inviteResponse)
+                            .then(()=>{
+                              this.app.getRootNav().push('GameSessionPage', invite.gameSessionId);                              
+                            })
+                            .catch(error => this.handleError(error));                            
+                          }
+                        ).catch(error => this.handleError(error));
                       }
-                      this.app.getRootNav().push('GameSessionPage', invite.gameSessionId);
-                    }
-                  )
+                    )
+                  } else {
+                    this.app.getRootNav().push('GameSessionPage', invite.gameSessionId);
+                  }
                 }
               }
             }
@@ -141,7 +153,7 @@ export class UserService {
         confirm.present();
       })
   }
-  */
+
   private handleError(error) {
     const toast = this.toast.create({ message: error, duration: 3000, position: 'top' });
     toast.present();

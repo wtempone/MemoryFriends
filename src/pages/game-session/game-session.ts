@@ -3,13 +3,8 @@ import { GameSession } from './../../providers/database/database-providers';
 import { TranslateService } from '@ngx-translate/core';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { GameSessionService } from '../../providers/database/services/game-session-service';
 
-/**
- * Generated class for the GameSessionPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-game-session',
@@ -17,17 +12,17 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class GameSessionPage {
   gameSession: GameSession;
-
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private authServiceProvider: AuthServiceProvider,
-    private translate: TranslateService  
+    private translate: TranslateService,
+    private gameSessionSrvc: GameSessionService
   ) {
-
-    /* this.authServiceProvider.db
-        .list('/game-sessiona/' + this.navParams.data)
-        .map((gameSession) =>{ this.gameSession =  gameSession;});
-        */
+    //this.gameSession = this.gameSessionSrvc.observe(this.navParams.data);
+    this.gameSessionSrvc.observe('-KvnCTXGqmHNH5p85Vgx').subscribe(gameSession => {
+      this.gameSession = gameSession;
+      console.log(this.gameSession);
+    });
   }
 
   ionViewDidLoad() {

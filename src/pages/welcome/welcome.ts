@@ -31,8 +31,10 @@ export class WelcomePage {
       .then(() => {
         this.authServiceProvider.getMe()
         .then(
-          userFB => {
+          data => {
+            let userFB = <any>data;
             console.log(userFB);
+
             const currentUser: User = {
               email: userFB.email,
               facebookId: userFB.id,

@@ -31,6 +31,7 @@ export class MainMenuPage {
     if (userSrvc.currentUser) {      
       authServiceProvider.getFriends().then((friends: any) => {
         this.userSrvc.friends = [];
+        this.userSrvc.startListenerInvites();
         friends.data.forEach(friend => {
           this.authServiceProvider.callFacebookApi(friend.id + '?fields=picture,name').then(fbprofile => {
             this.userSrvc.friends.push(fbprofile);
