@@ -5,8 +5,8 @@ import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { UserService, User } from './database/database-providers';
+import { HttpClient } from '@angular/common/http';
+//import { UserService, User } from './database/database-providers';
 
 @Injectable()
 export class AuthServiceProvider {
@@ -18,21 +18,23 @@ export class AuthServiceProvider {
     private platform: Platform,
     private facebook: Facebook,
     private toastController: ToastController,
-    private http: HttpClient,
-    public userService: UserService
+    private http: HttpClient
+    //public userService: UserService
     ) { }
 
   signInWithFacebook(): firebase.Promise<any> {
     if (this.platform.is('cordova')) {
       return this.facebook.login(['email', 'public_profile']).then(res => {
         this.facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
-        return this.afAuth.auth.signInWithCredential(this.facebookCredential);
       });
     } else {
-      return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((res => {
+      return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
+      .then(res => {
         this.facebookCredential = res.credential;
-        this.facebookUser = res.additionalUserInfo;
-      }));
+      })
+      .catch(error => {
+        this.handleError(error);
+      });
     }
   }
 
@@ -64,7 +66,6 @@ export class AuthServiceProvider {
       this.http.get('https://graph.facebook.com/v2.9/' + path +
         (path.indexOf('?') > 0 ? '&' : '?') + 'access_token=' +
         this.facebookCredential.accessToken)
-        .map(res => res.json())
         .subscribe(data => {
           resolve(data);
         }, error => {
@@ -83,6 +84,11 @@ export class AuthServiceProvider {
   }
   signOut(): void {
     this.afAuth.auth.signOut();
+  }
+
+  private handleError(error) {
+    const toast = this.toastController.create({ message: error, duration: 3000, position: 'top' });
+    toast.present();
   }
 
 }

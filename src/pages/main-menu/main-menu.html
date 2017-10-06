@@ -12,7 +12,7 @@
       </div>
       <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()"></div>
       <div float-left>
-        {{displayName}}
+        {{userSrvc.currenUser.name}}
       </div>
       <div float-right>
           <div class="profile-points">
@@ -39,12 +39,12 @@
     </div>
   </div>
 
-  <div *ngIf="friends" class="profile-image-wrapper">
+  <div *ngIf="userSrvc.friends" class="profile-image-wrapper">
 
     <h5 text-center>
       {{ 'INVITE_YOUR_FRIENDS' | translate }}
     </h5>
-    <button (click)="sendInvite(friend)" ion-button icon-only outline color="primary" *ngFor="let friend of friends">
+    <button (click)="sendInvite(friend)" ion-button icon-only outline color="primary" *ngFor="let friend of userSrvc.friends">
       <img [src]="friend.picture.data.url"/>
     </button>
   </div>

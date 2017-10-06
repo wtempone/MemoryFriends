@@ -1,10 +1,10 @@
 export class User {
 
     public name: string;
-    public email?: string;
     public facebookId: string;
+    public email?: string;
     public friends?: any[];
-    public profilePic?: number;
+    public profilePic?: any;
     public ranking?: number;
     public userGroups?: any[];
 

@@ -1,23 +1,21 @@
-import { Invite } from './../models/user';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from "angularfire2/database";
-import { User, GameSession, Player, GameSessionService } from '../database-providers';
+import { User, Invite } from '../database-providers';
 import { ToastController, AlertController, App } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
-import { } from './../../models/game-session';
 
 @Injectable()
 export class UserService {
   basePath: string = '/users';
   data: any;
   currentUser: User;
-
+  friends: any;
   constructor(
     private db: AngularFireDatabase,
     private toast: ToastController,
     private translate: TranslateService,
     private alertCtrl: AlertController,
-    private gameSessionSrvc: GameSessionService,
+    //private gameSessionSrvc: GameSessionService,
     protected app: App  
   ) {
     this.data = this.db.list(this.basePath)
@@ -33,15 +31,26 @@ export class UserService {
   }
 
   set(rec: User) {
+    const itemPath = `${this.basePath}/${rec.facebookId}`;
     const newRec: User = {
       facebookId: rec.facebookId,
       name: rec.name,
+      email: rec.email,
       profilePic: rec.profilePic
     };
+    return this.db.object(itemPath).set(newRec);
+  }
 
-    this.db.object(this.basePath + rec.facebookId).set(newRec)
-      .then(success => { this.currentUser = <User>newRec; })
-      .catch(error => this.handleError(error));
+  startListenerInvites() {
+    const itemPath = `${this.basePath}/${this.currentUser.facebookId}/invites`;
+    /*    
+    let options:FirebaseListFactoryOpts;
+    
+    this.invites = this.db.object('users/'+this.dbUser.facebookId + "/invites" );
+    this.invites.on('child_added', (data) => {
+      this.receiveInvite(data.val());
+    });*/
+    
   }
 
   update(key: string, value: any): void {
@@ -57,23 +66,16 @@ export class UserService {
   }
 
   sendEnvite(invite: Invite) {
-    return this.db.object('users/' + invite.toUser.facebookId + "/invites/" + invite.fromUser.facebookId)
-      .set(invite)
-      .catch(error => this.handleError(error));
+    const itemPath = `${this.basePath}/${invite.toUser.facebookId}/invites/${invite.fromUser.facebookId}`;
+    return this.db.object(itemPath).set(invite);
   }
 
   removeEnvite(invite: Invite) {
-    this.db.object('users/' + invite.toUser.facebookId + "/invites/" + invite.fromUser.facebookId).remove()
+    const itemPath = `${this.basePath}/${invite.toUser.facebookId}/invites/${invite.fromUser.facebookId}`;   
+    this.db.object(itemPath).remove()
       .catch(error => this.handleError(error));
   }
-
-
-  receiveEnvite(invite: Invite) {
-    this.db.object('users/' + invite.toUser.facebookId + "/invites/" + invite.fromUser.facebookId)
-      .set(invite)
-      .catch(error => this.handleError(error));
-  }
-
+  /*
   receiveInvite(invite: Invite) {
 
     this.translate.get([
@@ -139,10 +141,9 @@ export class UserService {
         confirm.present();
       })
   }
-
+  */
   private handleError(error) {
     const toast = this.toast.create({ message: error, duration: 3000, position: 'top' });
     toast.present();
   }
-
 }

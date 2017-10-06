@@ -50,8 +50,9 @@ export class MyApp {
 
   initTranslate() {
     // Set the default language for translation strings, and the current language.
-    this.translate.setDefaultLang('en');
-
+    this.translate.setDefaultLang('pt-br');
+    
+    /*  - Retirar comentario para liguatem automatica
     if (this.translate.getBrowserLang() !== undefined) {
       this.translate.use(this.translate.getBrowserLang());
     } else {
@@ -61,6 +62,7 @@ export class MyApp {
     this.translate.get(['BACK_BUTTON_TEXT']).subscribe(values => {
       this.config.set('ios', 'backButtonText', values.BACK_BUTTON_TEXT);
     });
+    */
   }
 
   openPage(page) {

@@ -3,7 +3,6 @@ import { AngularFireDatabase } from "angularfire2/database";
 import { User , GameSession , Player} from '../database-providers';
 import { ToastController, AlertController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
-import { } from './../../models/game-session';
 
 @Injectable()
 export class GameSessionService {
@@ -19,7 +18,7 @@ export class GameSessionService {
   ) {
     this.data = this.db.list(this.basePath)
   }
-
+/*
   getList(query = {}) {
     return this.db.list(this.basePath);
   }
@@ -49,5 +48,5 @@ export class GameSessionService {
     const toast = this.toast.create({ message: error, duration: 3000, position: 'top' });
     toast.present();
   }
-
+*/
 }
