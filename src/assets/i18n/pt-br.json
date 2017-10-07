@@ -72,6 +72,7 @@
   "SEARCH_PLACEHOLDER" : "Procure um item da lista, ex: \"Donald Duck\"",
 
   "WELCOME_INTRO" : "MemoryFriends",
+  "APP_TITLE" : "MemoryFriends",
   "QUICK_GAME" : "Jogo Rápido",
 
   "INVITE_YOUR_FRIENDS" : "Desafie seus amigos!",
@@ -83,8 +84,10 @@
   "DO_YOU_RECEIVE_INVITE_A_FRIEND_MESSAGE" : "Deseja aceitar o convite e começar um novo jogo?",
 
   "DO_YOU_RECEIVE_CONFIRM_INVITE_A_FRIEND" : "{{value}} entrou no jogo.",
-  "DO_YOU_RECEIVE_CONFIRM_INVITE_A_FRIEND_MESSAGE" : "Confirma entrada de jogador?"
-    
+  "DO_YOU_RECEIVE_CONFIRM_INVITE_A_FRIEND_MESSAGE" : "Confirma entrada de jogador?",
 
-
+  "SEND_A_MESSAGE" : "Envie uma mensagem...",
+  "SELECT_NUM_CARDS" : "Selecione o número de cartas",
+  "SELECT_CARDS" : "Selecione as cartas do jogo",
+  "MESSAGES" : "Mensagens"
 }

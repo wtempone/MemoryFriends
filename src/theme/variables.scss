@@ -81,6 +81,12 @@ $colors: (
 
 // chat
 $chat-bubble:(
-  background-left: #fea21c,
-  background-right: #8abefa,
+  background-left: #bffcbf,
+  background-right: #c5e0ff,
 );
+.toast-success {
+  > div{
+    background-color:#bffcbf!important;
+    color:#000000!important;
+  }
+}

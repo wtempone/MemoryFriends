@@ -1,3 +1,5 @@
+import { LocalStorage } from './localstorage/localstorage';
+import { Settings } from './settings/settings';
 import { Platform, ToastController } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook'
 
@@ -18,24 +20,43 @@ export class AuthServiceProvider {
     private platform: Platform,
     private facebook: Facebook,
     private toastController: ToastController,
-    private http: HttpClient
-    //public userService: UserService
-    ) { }
+    private http: HttpClient,
+    private localStorage: LocalStorage
+  ) {
+
+  }
+
+  loadFacebookCredentials() {
+    return new Promise(resolve => this.localStorage.getValue(this.localStorage.CurrentCredential).then(
+      credential => {
+        this.facebookCredential = credential;
+        resolve('OK');
+      })
+    )
+  }
 
   signInWithFacebook(): firebase.Promise<any> {
     if (this.platform.is('cordova')) {
       return this.facebook.login(['email', 'public_profile']).then(res => {
         this.facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+        this.localStorage.setValue(this.localStorage.CurrentCredential, this.facebookCredential)
+          .catch(error => this.handleError(error));
       });
     } else {
       return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
-      .then(res => {
-        this.facebookCredential = res.credential;
-      })
-      .catch(error => {
-        this.handleError(error);
-      });
+        .then(res => {
+          this.facebookCredential = res.credential;
+          this.localStorage.setValue(this.localStorage.CurrentCredential, this.facebookCredential)
+            .catch(error => this.handleError(error));
+        })
+        .catch(error => {
+          this.handleError(error);
+        });
     }
+  }
+
+  signInWithCredential(credential) {
+    return this.afAuth.auth.signInWithCredential(credential);
   }
 
   signInWithEmail(email: string, password: string): any {
@@ -53,15 +74,24 @@ export class AuthServiceProvider {
     return this.afAuth.auth.signOut();
   }
 
-  public getMe() {
+  getMe() {
     return this.callFacebookApi("me?fields=picture,email,id,name");
   }
 
-  public getFriends() {
+  getFriends() {
     return this.callFacebookApi('me/friends');
   }
 
-  public callFacebookApi(path: string) {
+  getUser(id) {
+    return new Promise(
+      resolve => {
+        this.callFacebookApi(id + '?fields=picture,name').then(fbprofile => {
+          resolve(fbprofile);
+        })
+      });
+  }
+
+  callFacebookApi(path: string) {
     return new Promise(resolve => {
       this.http.get('https://graph.facebook.com/v2.9/' + path +
         (path.indexOf('?') > 0 ? '&' : '?') + 'access_token=' +
@@ -75,13 +105,18 @@ export class AuthServiceProvider {
     });
   }
 
-  public presentToast(message: string) {
+  presentToast(message: string) {
     let toast = this.toastController.create({
       message: message,
       duration: 3000
     });
     toast.present();
   }
+
+  signed(): boolean {
+    return !!this.afAuth.auth.currentUser;
+  }
+
   signOut(): void {
     this.afAuth.auth.signOut();
   }

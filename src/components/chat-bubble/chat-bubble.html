@@ -1,0 +1,10 @@
+<div class="chatBubble">
+  <img class="profile-pic {{msg.playerIndex == currentPlayerIndex ? 'right' : 'left' }}" [src]="player?.user.profilePic.data.url"
+  />
+  <div class="chat-bubble {{msg.playerIndex == currentPlayerIndex ? 'right' : 'left' }}">
+    <div class="message">{{msg.text}}</div>
+    <div class="message-detail">
+      <span style="color:#777777;font-weight:bold;">{{player?.user.name}} </span>
+    </div>
+  </div>
+</div>

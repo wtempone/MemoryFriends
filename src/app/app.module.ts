@@ -1,3 +1,4 @@
+import { LocalStorage } from './../providers/localstorage/localstorage';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -84,13 +85,13 @@ export function provideSettings(storage: Storage) {
     SplashScreen,
     StatusBar,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
-
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthServiceProvider,
     Facebook,
     GameSessionService,
     UserService,
-    AngularFireDatabase    
+    AngularFireDatabase,
+    LocalStorage 
   ]
 })
 

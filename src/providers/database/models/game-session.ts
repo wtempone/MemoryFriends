@@ -17,7 +17,20 @@ export class Message {
     time : string;
 }
 
+export enum Steps {
+    ConfigNumCards,
+    SelectCard,
+    Game
+}
+
+export interface NumCards{
+    numCards:number;
+    rows:number;
+    cols:number;    
+}
+
 export class GameSession {
+    step: Steps;
     intervalPlay? : number;
     playerTurn ?: number;
     players?: Player[];
@@ -25,6 +38,7 @@ export class GameSession {
     cards? : Card[];
     messages? : Message[];
     constructor() {
+        this.step = Steps.ConfigNumCards;
         this.numOfCards  = 0;
         this.playerTurn = 0;
         this.players = new Array<Player>();
