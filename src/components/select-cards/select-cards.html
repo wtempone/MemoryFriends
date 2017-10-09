@@ -1,3 +1,69 @@
-<ion-title text-center>{{ 'SELECT_CARDS' | translate }}</ion-title>
-<p *ngFor='let friend of friends'>{{friend.name}}</p>
+<ion-title text-center>{{ 'SELECTED_CARDS' | translate }}</ion-title>
+<ion-grid>
+    <ion-row class="card card-ios" center>
+        <ion-col text-center col-21>
+            <strong>{{gameSession?.players[0].user.name.split(' ')[0]}}</strong>
+            <ion-grid>
+                <ion-row center>
+                    <ion-col col-14 no-margin text-center *ngFor='let card of friendsPlaceHolder; let i = index'>
+                        <div *ngIf="currentPlayerIndex == 0 ">
+                            <simple-user-card *ngIf="selectedCards[i]" [user]='selectedCards[i]' [disabled]='doneFired' (selectCard)="unSelect(selectedCards[i],i)"></simple-user-card>
+                            <simple-user-card *ngIf="!selectedCards[i]" [user]='card'></simple-user-card>
+                        </div>
+                        <div *ngIf="currentPlayerIndex != 0 && gameSession?.players[0].cards ">
+                            <simple-user-card *ngIf="gameSession?.players[0].cards[i]" [disabled]=true [user]='gameSession.players[0].cards[i]'></simple-user-card>
+                            <simple-user-card *ngIf="!gameSession?.players[0].cards[i]" [user]='card'></simple-user-card>
+                        </div>
+                        <simple-user-card *ngIf="currentPlayerIndex != 0 && !gameSession?.players[0].cards" [user]='card'></simple-user-card>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-col>
+        <ion-col text-center col-21>
+            <strong>{{gameSession?.players[1].user.name.split(' ')[0]}}</strong>
+            <ion-grid>
+                <ion-row center>
+                    <ion-col col-14 no-margin text-center *ngFor='let card of friendsPlaceHolder; let i = index'>
+                        <div *ngIf="currentPlayerIndex == 1 ">
+                            <simple-user-card *ngIf="selectedCards[i]" [user]='selectedCards[i]' [disabled]='doneFired' (selectCard)="unSelect(selectedCards[i],i)"></simple-user-card>
+                            <simple-user-card *ngIf="!selectedCards[i]" [user]='card'></simple-user-card>
+                        </div>
+                        <div *ngIf="currentPlayerIndex != 1 && gameSession?.players[1].cards ">
+                            <simple-user-card *ngIf="gameSession?.players[1].cards[i]" [disabled]=true [user]='gameSession.players[1].cards[i]'></simple-user-card>
+                            <simple-user-card *ngIf="!gameSession?.players[1].cards[i]" [user]='card'></simple-user-card>
+                        </div>
+                        <simple-user-card *ngIf="currentPlayerIndex != 1 && !gameSession?.players[1].cards" [user]='card'></simple-user-card>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 
+<div *ngIf="!doneFired">
+    <ion-title text-center>{{ 'SELECT_CARDS' | translate }}</ion-title>
+    <ion-grid>
+        <ion-row center>
+            <ion-col col-7 col-sm-7 col-md-6 col-lg-6 col-xl-6 no-padding no-margin text-center *ngFor='let friend of friends; let i = index'>
+                <simple-user-card [user]='friend' (selectCard)="select(friend,$event,i)"></simple-user-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>
+
+<div *ngIf="doneFired">
+        <ion-title text-center>{{ 'WAIT_OPPONENT_RESPONSE' | translate }}</ion-title>        
+</div>
+
+<ion-grid>
+    <ion-row no-padding no-margin>
+        <ion-col col-14 no-padding></ion-col>
+        <ion-col col-14 no-padding>
+            <button *ngIf="!doneFired && (selectedCards.length == (gameSession.numOfCards.numCards / 4))" full ion-button icon-left (click)="doneButton()">
+                <ion-icon name="ok"></ion-icon>
+                {{ 'DONE_BUTTON' | translate }}
+            </button>
+        </ion-col>
+        <ion-col col-14 no-padding></ion-col>
+    </ion-row>
+</ion-grid>

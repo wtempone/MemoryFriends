@@ -1,17 +1,30 @@
 import { User } from './user';
 
+export interface Friend{
+    id:string;
+    name: string;
+    picture:string;
+    selected?:boolean;
+}
+
 export class Player {
-    order : number;
     score : number;
+    ready? : boolean;
     user : User;
+    cards?: Friend[];
+    constructor() {
+        this.score = 0;
+    }
 }
 
-export class Card {
+export interface Card {
     ind : number;
-    cardOfUser : any;
+    card : Friend;
+    flipped?: boolean;
+    resolved?: boolean;
 }
 
-export class Message {
+export interface Message {
     playerIndex : number;
     text : string;
     time : string;
@@ -34,12 +47,11 @@ export class GameSession {
     intervalPlay? : number;
     playerTurn ?: number;
     players?: Player[];
-    numOfCards? : number;
+    numOfCards? : NumCards;
     cards? : Card[];
     messages? : Message[];
     constructor() {
         this.step = Steps.ConfigNumCards;
-        this.numOfCards  = 0;
         this.playerTurn = 0;
         this.players = new Array<Player>();
         this.cards = new Array<Card>();

@@ -1,5 +1,5 @@
 
 // The page the user lands on after opening the app and without a session
-export const FirstRunPage = 'GameSessionPage';
-//export const FirstRunPage = 'WelcomePage';
+//export const FirstRunPage = 'GameSessionPage';
+export const FirstRunPage = 'WelcomePage';
 

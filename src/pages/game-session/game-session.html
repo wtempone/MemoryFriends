@@ -1,8 +1,8 @@
 <ion-menu id="messages" side="right" [content]="game">
   <ion-header>
     <ion-toolbar>
-        <ion-title>{{ 'MESSAGES' | translate }}</ion-title>
-      </ion-toolbar>
+      <ion-title>{{ 'MESSAGES' | translate }}</ion-title>
+    </ion-toolbar>
   </ion-header>
   <ion-content>
     <ion-list>
@@ -27,20 +27,48 @@
 <ion-content #game>
   <ion-grid>
     <ion-row>
-      <ion-col col-4>
+      <ion-col col-14>
         <player-card [player]="gameSession?.players[0]"></player-card>
       </ion-col>
-      <ion-col col-4>
+      <ion-col col-14>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-title text-center>
+                Placar
+              </ion-title>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-14>
+              <ion-title text-center>
+                {{gameSession?.players[0].score}}
+              </ion-title>
+            </ion-col>
+            <ion-col col-14>
+              <ion-title text-center>
+                x
+              </ion-title>
+            </ion-col>
+            <ion-col col-14>
+              <ion-title text-center>
+                {{gameSession?.players[1].score}}
+              </ion-title>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-col>
-      <ion-col col-4>
+      <ion-col col-14>
         <player-card [player]="gameSession?.players[1]"></player-card>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <select-num-cards *ngIf="gameSession?.step == 0" [gameSession]='gameSession' (selectNumCard)="setNumCard($event)"></select-num-cards>
-  <select-cards *ngIf="gameSession?.step == 1" [gameSession]='gameSession'></select-cards>
-  
+  <select-cards *ngIf="gameSession?.step == 1" [gameSession]='gameSession' [gameSessionKey]='gameSessionKey' [currentPlayerIndex]='currentPlayerIndex'
+    (done)="playerReady($event)"></select-cards>
+  <game-play *ngIf="gameSession?.step == 2" [gameSession]='gameSession' [gameSessionKey]='gameSessionKey' [currentPlayerIndex]='currentPlayerIndex'></game-play>
+
 </ion-content>
 <ion-footer>
   <ion-item>

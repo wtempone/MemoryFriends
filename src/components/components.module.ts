@@ -1,3 +1,4 @@
+import { GamePlayComponent } from './game-play/game-play';
 import { SelectCardsComponent } from './select-cards/select-cards';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
@@ -6,19 +7,25 @@ import { ChatBubbleComponent } from './chat-bubble/chat-bubble';
 import { PlayerCardComponent } from './player-card/player-card';
 import { SelectNumCardsComponent } from './select-num-cards/select-num-cards';
 import { SimpleUserCardComponent } from './simple-user-card/simple-user-card';
+import { FlashUserCardComponent } from './flash-user-card/flash-user-card';
 @NgModule({
 	declarations: [FlashCardComponent,
     ChatBubbleComponent,
     PlayerCardComponent,
     SelectCardsComponent,
     SelectNumCardsComponent,
-    SimpleUserCardComponent],
+    SimpleUserCardComponent,
+    GamePlayComponent
+    ],
 	imports: [TranslateModule.forChild()],
 	exports: [FlashCardComponent,
     ChatBubbleComponent,
     PlayerCardComponent,
     SelectCardsComponent,
     SelectNumCardsComponent,
-    SimpleUserCardComponent]
+    SimpleUserCardComponent,
+    FlashUserCardComponent,
+    GamePlayComponent
+]
 })
 export class ComponentsModule {}

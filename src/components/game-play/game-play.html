@@ -1,0 +1,8 @@
+<ion-grid center>
+    <ion-row center>
+        <ion-col col-10 no-padding no-margin text-center *ngFor='let item of gameSession?.cards; let i = index'>
+            <!-- <simple-user-card [user]='card' (selectCard)="select(friend,$event,i)"></simple-user-card> -->
+            <flash-user-card [card]='item' (selectCard)='selectCard($event)'></flash-user-card>
+        </ion-col>
+    </ion-row>
+</ion-grid>

@@ -88,6 +88,8 @@
 
   "SEND_A_MESSAGE" : "Envie uma mensagem...",
   "SELECT_NUM_CARDS" : "Selecione o número de cartas",
-  "SELECT_CARDS" : "Selecione as cartas do jogo",
-  "MESSAGES" : "Mensagens"
+  "SELECT_CARDS" : "Selecione as cartas",
+  "SELECTED_CARDS" : "Cartas selecionadas",
+  "MESSAGES" : "Mensagens",
+  "WAIT_OPPONENT_RESPONSE":"Aguardando oponente..."
 }

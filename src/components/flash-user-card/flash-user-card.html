@@ -1,0 +1,11 @@
+<div class="container-card" (click)='select()'>
+  <flash-card [disabled]='(card.flipped || card.resolved)' [flipped]='card.flipped' >
+    <div class="flash-card-front">
+      <simple-user-card [user]='placeholder' [disabled]='true'></simple-user-card>
+    </div>
+    <div class="flash-card-back">
+      <simple-user-card [user]='card.card' [disabled]='true'></simple-user-card>
+    </div>
+  </flash-card>
+</div>
+  

@@ -1,13 +1,21 @@
-import { Component } from '@angular/core';
+import { Friend } from './../../providers/database/models/game-session';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  inputs: ['user:user'],
+  inputs: ['user:user','disabled:disabled'],
   selector: 'simple-user-card',
-  templateUrl: 'simple-user-card.html'
+  templateUrl: 'simple-user-card.html',
 })
 export class SimpleUserCardComponent {
+  @Output() selectCard = new EventEmitter();
+  user: Friend;
+  disabled: boolean;
   constructor() {
 
   }
-
+  select() {
+    if (this.user.selected || this.disabled) return;
+    this.user.selected = !this.user.selected;
+    this.selectCard.emit(this.user.selected);    
+  }
 }

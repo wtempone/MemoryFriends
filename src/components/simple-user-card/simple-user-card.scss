@@ -1,12 +1,10 @@
 simple-user-card {
-    .image-user{
-        width: 90%;
-        height: 90%;    
-        margin: 10% auto auto;
-        border-radius: 5%;
-      }
-    
-      .no-padding{
-        padding:0;
-      }
+  .image-user{
+    padding: 5%;
+    margin:0;
+    width:100%;
+  }
+  .selected {
+    filter: blur(1px) opacity(.5);
+  }
 }

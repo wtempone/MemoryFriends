@@ -103,8 +103,9 @@ export class UserService {
                 let gameSession = new GameSession();
 
                 if (!invite.gameSessionId) {
-                  var player = new Player();
-                  player.user = this.currentUser;
+                  var player = <Player>{
+                    user: this.currentUser
+                  }
                   gameSession.players.push(player);
                   this.gameSessionSrvc.create(gameSession).then(
                     gameSession => {
@@ -121,9 +122,10 @@ export class UserService {
                     this.gameSessionSrvc.get(invite.gameSessionId).subscribe(
                       data => {
                         let gameSession: GameSession = data;
-                        var player = new Player();
-                        player.user = this.currentUser;
-                        gameSession.players.push(player);
+                        var player = <Player>{
+                          user: this.currentUser
+                        }
+                              gameSession.players.push(player);
                         let keyParse: any = gameSession;
                         this.gameSessionSrvc.set(keyParse.$key, gameSession).then(
                           () => {
