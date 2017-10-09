@@ -104,6 +104,7 @@ export class UserService {
 
                 if (!invite.gameSessionId) {
                   var player = <Player>{
+                    score: 0,
                     user: this.currentUser
                   }
                   gameSession.players.push(player);
@@ -123,6 +124,7 @@ export class UserService {
                       data => {
                         let gameSession: GameSession = data;
                         var player = <Player>{
+                          score:0,
                           user: this.currentUser
                         }
                               gameSession.players.push(player);

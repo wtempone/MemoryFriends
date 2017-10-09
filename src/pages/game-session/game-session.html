@@ -35,7 +35,7 @@
           <ion-row>
             <ion-col>
               <ion-title text-center>
-                Placar
+                  {{ 'SCORE' | translate }}
               </ion-title>
             </ion-col>
           </ion-row>
@@ -52,8 +52,8 @@
             </ion-col>
             <ion-col col-14>
               <ion-title text-center>
-                {{gameSession?.players[1].score}}
-              </ion-title>
+                  {{gameSession?.players[1].score}}
+                </ion-title>
             </ion-col>
           </ion-row>
         </ion-grid>
