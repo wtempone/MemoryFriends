@@ -18,7 +18,7 @@ export class GameSessionPage {
   currentPlayerIndex: number;
   gameSessionKey: string;
   numCards:NumCards;
-
+  messages:Message[] =[]
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private authServiceProvider: AuthServiceProvider,

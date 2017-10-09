@@ -10,7 +10,7 @@ import { Message, Steps } from '../models/game-session';
 export class GameSessionService {
   basePath: string = '/game-sessions';
   data;
-
+  messages = [];
   numCards = [
     { numCards: 12, rows: 3, cols: 4 },
     { numCards: 16, rows: 4, cols: 4 },
@@ -94,29 +94,59 @@ export class GameSessionService {
   startListenerMenssages(key: string, playerIndex: number) {
     const itemPath = `${this.basePath}/${key}/messages`;
     this.db.list(itemPath).$ref.orderByKey().limitToLast(1).on('child_added', res => {
-      const msg: Message = <Message>res.val()      
-      if (msg.playerIndex != playerIndex) {       
-      const toast = this.toast.create({ message: msg.text, duration: 3000, position: 'bottom', cssClass: 'toast-success' });
-      toast.present();            
-      this.checkMessage(key, msg.id).then((exitst:boolean) => {
-          if (exitst) return;
-        })
+      const msg: Message = <Message>res.val()
+      if (msg.playerIndex != playerIndex) {
+        if (this.checkMessage(key, msg.id)) return;
+        const toast = this.toast.create({ message: msg.text, duration: 3000, position: 'bottom', cssClass: 'toast-success' });
+        toast.present();
+        let ind = 0;
+        let messagesCollection = this.messages.filter(x => x.gameSessionKey == key);
+        if (messagesCollection.length > 0) {
+          this.messages.forEach((x, i) => {
+            if (x.gameSessionKey == key) {
+              ind = i
+              return;
+            }
+          });
+        } else {
+          this.messages.push(
+            {
+              gameSessionKey: key,
+              messages: []
+            }
+          )
+        }
+        this.messages[ind].messages.push(msg);
       }
     });
   }
 
-  checkMessage(key: string, id: number) {
+  checkMessage(key: string, id: number): boolean {
+    let retorno = false;
     const itemPath = `${this.basePath}/${key}/messages`;
-    return new Promise(resolve => {
-      this.db.object(itemPath).$ref.once('value').then((res) =>{
-        let messages = res.val();
-        if (messages.length > 0) {
-          resolve (messages.filter(x => x.id == id).length > 0);
-        } else {
-          resolve(false);
+    let messagesCollection = this.messages.filter(x => x.gameSessionKey == key);
+    let messages: Message[] = [];
+    let ind = 0;
+    if (messagesCollection.length > 0) {
+      this.messages.forEach((x, i) => {
+        if (x.gameSessionKey == key) {
+          ind = i;
+          return;
         }
       });
-    })
+    } else {
+      this.messages.push(
+        {
+          gameSessionKey: key,
+          messages: []
+        }
+      )
+    }
+    if (this.messages[ind].messages.length > 0) {
+      return (this.messages[ind].messages.filter(x => x.id == id).length > 0);
+    } else {
+      return (false);
+    }
   }
 
   private handleError(error) {
