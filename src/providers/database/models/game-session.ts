@@ -25,6 +25,7 @@ export interface Card {
 }
 
 export interface Message {
+    id: number;
     playerIndex : number;
     text : string;
     time : string;

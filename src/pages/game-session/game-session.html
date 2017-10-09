@@ -28,14 +28,14 @@
   <ion-grid>
     <ion-row>
       <ion-col col-14>
-        <player-card [player]="gameSession?.players[0]"></player-card>
+        <player-card [player]="gameSession?.players[0]" [selected]="(gameSession?.playerTurn==0 && gameSession?.step == 2)"></player-card>
       </ion-col>
       <ion-col col-14>
         <ion-grid>
           <ion-row>
             <ion-col>
               <ion-title text-center>
-                  {{ 'SCORE' | translate }}
+                {{ 'SCORE' | translate }}
               </ion-title>
             </ion-col>
           </ion-row>
@@ -52,14 +52,14 @@
             </ion-col>
             <ion-col col-14>
               <ion-title text-center>
-                  {{gameSession?.players[1].score}}
-                </ion-title>
+                {{gameSession?.players[1].score}}
+              </ion-title>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-col>
       <ion-col col-14>
-        <player-card [player]="gameSession?.players[1]"></player-card>
+        <player-card [player]="gameSession?.players[1]" [selected]="(gameSession?.playerTurn==1 && gameSession?.step == 2)"></player-card>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -71,8 +71,10 @@
 
 </ion-content>
 <ion-footer>
-  <ion-item>
-    <ion-input #message placeholder="{{ 'SEND_A_MESSAGE' | translate }}"></ion-input>
-    <ion-icon name="send" (click)="sendMessage(message.value);message.value='';" item-end></ion-icon>
-  </ion-item>
+  <ion-toolbar>
+    <ion-item>
+      <ion-input #message placeholder="{{ 'SEND_A_MESSAGE' | translate }}"></ion-input>
+      <ion-icon name="send" (click)="sendMessage(message.value);message.value='';" item-end></ion-icon>
+    </ion-item>
+  </ion-toolbar>
 </ion-footer>

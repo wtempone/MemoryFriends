@@ -37,8 +37,6 @@ export class WelcomePage {
       .then(
       data => {
         let userFB = <any>data;
-        console.log('Login');        
-        console.log(userFB);
         const currentUser: User = {
           email: userFB.email,
           facebookId: userFB.id,
@@ -47,7 +45,6 @@ export class WelcomePage {
         }
         this.userSrvc.set(currentUser).then(success => {
           this.userSrvc.currentUser = currentUser;
-          console.log(this.userSrvc.currentUser);
           this.navCtrl.push('MainMenuPage')
         }).catch(error => this.handleError(error));
       }).catch(error => this.handleError(error));

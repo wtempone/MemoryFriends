@@ -47,6 +47,7 @@ export class GamePlayComponent {
 
     }, 1000);
   }
+
   resolveCards(cards: Card[]) {
     cards.forEach((card: Card) => {
       card.resolved = true;
@@ -65,5 +66,15 @@ export class GamePlayComponent {
       card.flipped = false;
       this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards/${card.ind}`, card)
     })
+    this.changeTurn()
   }
+
+  changeTurn(){
+    if (this.currentPlayerIndex == 0) {
+      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 1)
+    } else {
+      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 0)
+    }
+  }
+
 }

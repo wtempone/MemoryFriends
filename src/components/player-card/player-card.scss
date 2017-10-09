@@ -1,12 +1,33 @@
 player-card {
-    .image-user{
-        width: 50%;
-        height: 50%;    
-        margin: 10% auto auto;
-        border-radius: 50%;
-      }
-    
-      .no-padding{
-        padding:0;
-      }
+  .card {
+    padding:0;
+    .card-content{
+      padding: 10px 10px 0px 10px;
+    }
+    p {        
+      background-color: #ffffff;
+      border: 1px #cccccc solid;
+      width: 100%;
+      margin: 0;
+      border-radius: 1vw;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;      
+    }
+
+  }
+  .card-select {
+    background-color: color($colors, primary, base);
+  }
+
+  .image-user{
+      width: 50%;
+      height: 50%;    
+      margin: 10% auto auto;
+      border-radius: 50%;
+    }
+  
+    .no-padding{
+      padding:0;
+    }
 }

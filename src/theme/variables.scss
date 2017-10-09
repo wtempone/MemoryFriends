@@ -87,7 +87,10 @@ $chat-bubble:(
 .toast-success {
   > div{
     background-color:#bffcbf!important;
-    color:#000000!important;
+    .toast-message {
+      color: #000000;
+    }    
   }
+
 }
 $grid-columns:42;

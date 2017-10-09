@@ -92,14 +92,31 @@ export class GameSessionService {
   }
 
   startListenerMenssages(key: string, playerIndex: number) {
-    const itemPath = `${this.basePath}/${key}/messages/`;
-    this.db.list(itemPath).$ref.orderByKey().limitToLast(1).on('child_added', message => {
-      const msg: Message = <Message>message.val()
-      if (msg.playerIndex != playerIndex) {
-        const toast = this.toast.create({ message: msg.text, duration: 3000, position: 'bottom', cssClass: 'toast-success' });
-        toast.present();
+    const itemPath = `${this.basePath}/${key}/messages`;
+    this.db.list(itemPath).$ref.orderByKey().limitToLast(1).on('child_added', res => {
+      const msg: Message = <Message>res.val()      
+      if (msg.playerIndex != playerIndex) {       
+      const toast = this.toast.create({ message: msg.text, duration: 3000, position: 'bottom', cssClass: 'toast-success' });
+      toast.present();            
+      this.checkMessage(key, msg.id).then((exitst:boolean) => {
+          if (exitst) return;
+        })
       }
     });
+  }
+
+  checkMessage(key: string, id: number) {
+    const itemPath = `${this.basePath}/${key}/messages`;
+    return new Promise(resolve => {
+      this.db.object(itemPath).$ref.once('value').then((res) =>{
+        let messages = res.val();
+        if (messages.length > 0) {
+          resolve (messages.filter(x => x.id == id).length > 0);
+        } else {
+          resolve(false);
+        }
+      });
+    })
   }
 
   private handleError(error) {

@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
  * Components.
  */
 @Component({
-  inputs: ['player:player'],
+  inputs: ['player:player','selected:selected'],
   selector: 'player-card',
   templateUrl: 'player-card.html'
 })

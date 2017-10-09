@@ -45,7 +45,6 @@ export class GameSessionPage {
   }
 
   gameMenu() {
-    console.log('menu')
     this.menuCtrl.toggle('messages');
   }
 
@@ -57,6 +56,7 @@ export class GameSessionPage {
     }
     this.gameSessionSrvc.sendMessage(this.gameSessionKey,id,
       <Message>{
+        id: id,
         playerIndex: this.currentPlayerIndex,
         text: text,
         time: Date.now().toString()
@@ -98,7 +98,7 @@ export class GameSessionPage {
     }
 
     this.shuffle(indexArray);
-    console.log(indexArray);
+
     let cards:Card[] = [];
     index = 0;
     for (const item of indexArray) {
@@ -109,12 +109,12 @@ export class GameSessionPage {
       cards.push(card);
       index++;
     }
-    console.log(cards);
 
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards`, cards).then(() => {
       this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.Game);  
     });  
-    
+
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 0)    
   }
 
   shuffle(a) {

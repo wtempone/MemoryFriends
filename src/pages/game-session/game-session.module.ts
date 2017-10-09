@@ -10,6 +10,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { GameSessionPage } from './game-session';
 import { TranslateModule } from '@ngx-translate/core';
 import { FlashUserCardComponent } from '../../components/flash-user-card/flash-user-card';
+import { ProgressBarComponent } from '../../components/progress-bar/progress-bar';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FlashUserCardComponent } from '../../components/flash-user-card/flash-u
     SimpleUserCardComponent,
     FlashUserCardComponent,
     FlashCardComponent,
-    GamePlayComponent
+    GamePlayComponent,
+    ProgressBarComponent    
     ],
   imports: [
     IonicPageModule.forChild(GameSessionPage),

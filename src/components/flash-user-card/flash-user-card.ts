@@ -22,7 +22,7 @@ export class FlashUserCardComponent {
 
   }
   select() {
-    if (this.card.flipped || this.card.resolved) return;
+    if (this.card.flipped || this.card.resolved || this.disabled) return;
     this.selectCard.emit(this.card);
   }
 }

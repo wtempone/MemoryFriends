@@ -91,7 +91,6 @@ export class SelectCardsComponent {
       };
       this.selectedCards.push(newCard);
       this.friends[index].selected = true;
-      console.log(this.selectedCards);
 
       this.gameSessionSrvc.setAllPlayersCard(this.gameSessionKey, this.currentPlayerIndex, this.selectedCards);
     }
