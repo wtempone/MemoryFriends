@@ -176,11 +176,11 @@ export class GameSessionPage {
   startTimerPlay() {
     this.progress = 100;
     this.interval = setInterval(() => {
-      this.progress--
+      this.progress -= 0.1;
       if (this.progress < 0) {
         clearInterval(this.interval);        
       }
-    }, 1000)
+    }, 100)
   }
 
   restartTimePlay() {
