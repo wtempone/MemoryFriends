@@ -10,6 +10,7 @@ import { SelectNumCardsComponent } from './select-num-cards/select-num-cards';
 import { SimpleUserCardComponent } from './simple-user-card/simple-user-card';
 import { FlashUserCardComponent } from './flash-user-card/flash-user-card';
 import { ProgressBarComponent } from './progress-bar/progress-bar';
+import { EndGameComponent } from './end-game/end-game';
 
 @NgModule({
 	declarations: [FlashCardComponent,
@@ -20,7 +21,8 @@ import { ProgressBarComponent } from './progress-bar/progress-bar';
     SimpleUserCardComponent,
     GamePlayComponent,
     ProgressBarComponent,
-    InviteUserCardComponent
+    InviteUserCardComponent,
+    EndGameComponent
     ],
 	imports: [TranslateModule.forChild()],
 	exports: [FlashCardComponent,
@@ -32,7 +34,8 @@ import { ProgressBarComponent } from './progress-bar/progress-bar';
     FlashUserCardComponent,
     GamePlayComponent,
     ProgressBarComponent,
-    InviteUserCardComponent
+    InviteUserCardComponent,
+    EndGameComponent
 ]
 })
 export class ComponentsModule {}

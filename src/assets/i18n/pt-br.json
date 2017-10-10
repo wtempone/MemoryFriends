@@ -92,5 +92,7 @@
   "SELECTED_CARDS" : "Cartas selecionadas",
   "MESSAGES" : "Mensagens",
   "WAIT_OPPONENT_RESPONSE":"Aguardando oponente...",
-  "SCORE":"Placar"
+  "SCORE":"Placar",
+  "DRAW":"Jogo empatado!",
+  "WIN":"{{value}} venceu o jogo."
 }

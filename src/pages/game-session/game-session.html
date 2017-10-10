@@ -64,23 +64,22 @@
     </ion-row>
   </ion-grid>
 
-  <select-num-cards *ngIf="gameSession?.step == 0" 
-    [gameSession]='gameSession' 
+  <select-num-cards *ngIf="gameSession?.step == 0" [ngClass]="{'bounceInLeft' : gameSession?.step == 0}" [gameSession]='gameSession'
     (selectNumCard)="setNumCard($event)">
   </select-num-cards>
-  <select-cards *ngIf="gameSession?.step == 1" 
-    [gameSession]='gameSession' 
-    [gameSessionKey]='gameSessionKey' 
-    [currentPlayerIndex]='currentPlayerIndex'
+
+  <select-cards *ngIf="gameSession?.step == 1" [gameSession]='gameSession' [gameSessionKey]='gameSessionKey' [currentPlayerIndex]='currentPlayerIndex'
     (done)="playerReady($event)">
   </select-cards>
-  <game-play *ngIf="gameSession?.step == 2" 
-    [gameSession]='gameSession' 
-    [gameSessionKey]='gameSessionKey' 
-    [currentPlayerIndex]='currentPlayerIndex'
-    (restartTimePlay)='restartTimePlay()'
-    (changeTurn)='changeTurn()'
-    ></game-play>
+
+  <game-play *ngIf="gameSession?.step == 2" [gameSession]='gameSession' [gameSessionKey]='gameSessionKey' [currentPlayerIndex]='currentPlayerIndex'
+    (changeTurn)='changeTurn($event)'>
+  </game-play>
+
+  <!-- <end-game *ngIf="gameSession?.step == 2" [gameSession]='gameSession' [gameSessionKey]='gameSessionKey' [currentPlayerIndex]='currentPlayerIndex'
+    (newGame)='newGame()' (exitGame)='exit()' (restartGame)='restart()'>
+  </end-gamey> -->
+
 
 </ion-content>
 <ion-footer>

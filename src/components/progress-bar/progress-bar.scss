@@ -16,10 +16,12 @@ progress-bar {
 	}
 
 	.progress-inner {
-		min-width: 15%;
+		//min-width: 2%;
 		white-space: nowrap;
 		overflow: hidden;
-		padding: 3px;
+		padding: 0;
+		padding-top: 3px;
+		padding-bottom: 3px;
 		border-radius: 20px;
 		background-color: map-get($colors, primary);
 	}

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController, ToastController } from 'ionic-angular';
 import { GameSessionService } from '../../providers/database/services/game-session-service';
-import { Message, Steps, Card } from '../../providers/database/models/game-session';
+import { Message, Steps, Card, Turn } from '../../providers/database/models/game-session';
 
 @IonicPage()
 @Component({
@@ -21,8 +21,11 @@ export class GameSessionPage {
   numCards: NumCards;
   messages: Message[] = [];
   interval;
+  timeOut;
   progress: number;
-
+  waiting: boolean;
+  turns:Turn[] = [];
+  started:boolean = false;
   friendsPlaceHolder: Friend[] = [];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -46,27 +49,26 @@ export class GameSessionPage {
         this.gameSessionKey = parseKey.$key;
       }
       this.gameSessionSrvc.startListenerMenssages(this.gameSessionKey, this.currentPlayerIndex);
-      const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/step`;      
+      const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/step`;
       this.stepChange()
     });
-    
+
   }
   stepChange() {
     const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/step`;
     this.gameSessionSrvc.db.object(path).$ref.on('value', (step) => {
       if (step.val() == Steps.Game) {
-        setTimeout(() => {
-          this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 0)
-          this.listernerChangeTurn(true);
-          this.startTimerPlay();          
-        }, 1000);
+        if (!this.started) {
+            this.started = true;
+            this.startTimerPlay(true);
+            this.gameSessionSrvc.db.object(path).$ref.off();          
+            this.listernerChangeTurn(true);
+          }
       } else {
-        this.listernerChangeTurn(false);  
-        if (this.interval) {
-          clearInterval(this.interval);
-        }
+        this.listernerChangeTurn(false);
+        //this.startTimerPlay(false);
       }
-    });   
+    });
   }
   gameMenu() {
     this.menuCtrl.toggle('messages');
@@ -87,6 +89,7 @@ export class GameSessionPage {
       }
     ).catch(error => this.handleError(error))
   }
+
   setNumCard(numCards: NumCards) {
     this.numCards = numCards;
     this.friendsPlaceHolder = [];
@@ -102,6 +105,7 @@ export class GameSessionPage {
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/numOfCards`, numCards);
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.SelectCard);
   }
+
   playerReady($event) {
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/${this.currentPlayerIndex}/ready`, true)
       .then(() => {
@@ -144,10 +148,9 @@ export class GameSessionPage {
       index++;
     }
 
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards`, cards).then(() => {
-      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`,  Steps.Game );
-    });
-
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards`, cards);
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.Game);
+    this.turns = [];
   }
 
   shuffle(a) {
@@ -160,35 +163,82 @@ export class GameSessionPage {
     }
   }
 
-  listernerChangeTurn(on:boolean) {
-    const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/playerTurn`;
+  listernerChangeTurn(on: boolean) {
+    const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/turn`;
     if (on) {
-      this.gameSessionSrvc.db.object(path).$ref.on('value', (turn) => {
-        if (!this.interval) {
-          this.startTimerPlay();
+      this.gameSessionSrvc.db.object(path).$ref.on('value', (res) => {
+        let turn:Turn = res.val();
+        if (!turn) return;
+        let exists = this.turns.filter(x => x.id == turn.id).length > 0;
+        //console.log(`listener ==> turn.val(): ${turn.id} exists: ${exists} controle interno turn:${this.turns}`);
+        if (exists) return;        
+        this.progress = 100;
+        this.turns.push(turn);
+        if (this.currentPlayerIndex == this.gameSession.playerTurn) {
+          if (!turn.hit) {
+            this.changePlayer();
+          } else {
+            if (this.checkEndGame()){
+              this.endGame();
+            }
+          }
         }
       });
     } else {
-      this.gameSessionSrvc.db.object(path).$ref.off('value');        
+      this.gameSessionSrvc.db.object(path).$ref.off('value');
     }
   }
 
-  startTimerPlay() {
-    this.progress = 100;
-    this.interval = setInterval(() => {
-      this.progress -= 0.1;
-      if (this.progress < 0) {
-        clearInterval(this.interval);        
-      }
-    }, 100)
+  checkEndGame(): boolean {
+    let numHits:number = 0;
+    this.gameSession.players.forEach(player => {
+      numHits += player.score;
+    });
+    return numHits == (this.gameSession.numOfCards.numCards / 2);
+  }
+   
+  endGame() {
+    alert('Acabou!');
+  }
+
+  startTimerPlay(on) {
+    this.restartTimePlay();
+    if (on) {
+      //console.log('start time');
+      this.interval = setInterval(() => {
+        if (this.progress >= 0.000) {
+          this.progress -= 0.2;
+          if (this.progress < 0.000) {
+            //console.log(this.progress);
+            this.changeTurn(false);
+          }  
+        }
+      }, 30)
+    } else {
+      clearInterval(this.interval);
+    }
   }
 
   restartTimePlay() {
-    clearInterval(this.interval);
-    this.startTimerPlay()    
+    this.progress = 100;
   }
 
-  changeTurn() {
+  changeTurn(hit: boolean) {
+    //console.log('change turn')
+    let nextId:number = 0;
+    if (this.gameSession.turn) {
+      nextId = this.gameSession.turn.id + 1;
+    }
+    let nextTurn:Turn = {
+      id: nextId,
+      hit: hit
+    }
+    this.unFlipCards(this.gameSession.cards.filter(x => x.flipped && !x.resolved));
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/turn`, nextTurn);    
+  }
+
+  changePlayer() {
+    //console.log('changed Player');   
     if (this.currentPlayerIndex == 0) {
       this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 1);
     } else {
@@ -196,6 +246,12 @@ export class GameSessionPage {
     }
   }
 
+  unFlipCards(cards: Card[]) {
+    cards.forEach((card: Card) => {
+      card.flipped = false;
+      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards/${card.ind}`, card)
+    })
+  }
   private handleError(error) {
     const toast = this.toast.create({ message: error, duration: 3000, position: 'top' });
     toast.present();

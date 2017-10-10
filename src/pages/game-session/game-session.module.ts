@@ -11,6 +11,7 @@ import { GameSessionPage } from './game-session';
 import { TranslateModule } from '@ngx-translate/core';
 import { FlashUserCardComponent } from '../../components/flash-user-card/flash-user-card';
 import { ProgressBarComponent } from '../../components/progress-bar/progress-bar';
+import { EndGameComponent } from '../../components/end-game/end-game';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ProgressBarComponent } from '../../components/progress-bar/progress-bar
     FlashUserCardComponent,
     FlashCardComponent,
     GamePlayComponent,
+    EndGameComponent,
     ProgressBarComponent    
     ],
   imports: [

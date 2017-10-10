@@ -11,7 +11,6 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class GamePlayComponent {
   @Output() changeTurn = new EventEmitter();
-  @Output() restartTimePlay = new EventEmitter();
   
   friends: Friend[] = [];
   friendsPlaceHolder: Friend[] = [];
@@ -39,7 +38,7 @@ export class GamePlayComponent {
               if (cardId == card.card.id) {
                 this.resolveCards(this.gameSession.cards.filter(x => x.flipped && !x.resolved));
               } else {
-                this.unFlipCards(this.gameSession.cards.filter(x => x.flipped && !x.resolved));
+                this.changeTurn.emit(false);
               }
             } else {
               cardId = card.card.id;
@@ -61,15 +60,6 @@ export class GamePlayComponent {
     }
     score++
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/${this.currentPlayerIndex}/score`, score)
-    this.restartTimePlay.emit();
+    this.changeTurn.emit(true);
   }
-
-  unFlipCards(cards: Card[]) {
-    cards.forEach((card: Card) => {
-      card.flipped = false;
-      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards/${card.ind}`, card)
-    })
-    this.changeTurn.emit();
-  }
-
 }

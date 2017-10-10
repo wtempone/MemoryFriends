@@ -43,15 +43,22 @@ export interface NumCards{
     cols:number;    
 }
 
+export interface Turn{
+    id: number;
+    hit: boolean;
+}
+
 export class GameSession {
     step: Steps;
     intervalPlay? : number;
+    turn: Turn;
     playerTurn ?: number;
     players?: Player[];
     numOfCards? : NumCards;
     cards? : Card[];
     messages? : Message[];
-    friendsPlaceHolder: Friend[];    
+    friendsPlaceHolder: Friend[];
+    winners?:Player[];
     constructor() {
         this.step = Steps.ConfigNumCards;
         this.playerTurn = 0;
