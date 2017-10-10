@@ -10,8 +10,9 @@ import { Component, Output, EventEmitter } from '@angular/core';
   templateUrl: 'game-play.html'
 })
 export class GamePlayComponent {
-  @Output() done = new EventEmitter();
-
+  @Output() changeTurn = new EventEmitter();
+  @Output() restartTimePlay = new EventEmitter();
+  
   friends: Friend[] = [];
   friendsPlaceHolder: Friend[] = [];
   selectedCards = []
@@ -19,6 +20,7 @@ export class GamePlayComponent {
   gameSession: GameSession;
   gameSessionKey: string;
   doneFired: boolean;
+
   constructor(
     public gameSessionSrvc: GameSessionService,
     public userSrvc: UserService,
@@ -59,6 +61,7 @@ export class GamePlayComponent {
     }
     score++
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/${this.currentPlayerIndex}/score`, score)
+    this.restartTimePlay.emit();
   }
 
   unFlipCards(cards: Card[]) {
@@ -66,15 +69,7 @@ export class GamePlayComponent {
       card.flipped = false;
       this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards/${card.ind}`, card)
     })
-    this.changeTurn()
-  }
-
-  changeTurn(){
-    if (this.currentPlayerIndex == 0) {
-      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 1)
-    } else {
-      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 0)
-    }
+    this.changeTurn.emit();
   }
 
 }

@@ -51,6 +51,7 @@ export class GameSession {
     numOfCards? : NumCards;
     cards? : Card[];
     messages? : Message[];
+    friendsPlaceHolder: Friend[];    
     constructor() {
         this.step = Steps.ConfigNumCards;
         this.playerTurn = 0;

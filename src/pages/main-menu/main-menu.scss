@@ -5,6 +5,11 @@ page-main-menu {
     z-index: 2;
     margin-top: 20px;
     text-align: center;
+    img {
+      border-radius: 50%;
+      width: 40vw;
+      height: 40vw;
+    }
   }
   
   .splash-logo {

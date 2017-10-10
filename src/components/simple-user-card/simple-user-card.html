@@ -1,4 +1,4 @@
 <ion-card class="image-user" (click)="select()" [ngClass]="{'selected': user.selected && user.name!='' }">
-    <img *ngIf="user.name!=''" [src]="user?.picture.data.url" />
-    <img *ngIf="user.name==''" src="assets/img/appicon.png" />
+    <img *ngIf="user.id!=0" [src]="user?.picture.data.url" />
+    <img *ngIf="user.id==0" src="assets/img/appicon.png" />
   </ion-card>

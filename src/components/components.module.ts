@@ -1,3 +1,4 @@
+import { InviteUserCardComponent } from './invite-user-card/invite-user-card';
 import { GamePlayComponent } from './game-play/game-play';
 import { SelectCardsComponent } from './select-cards/select-cards';
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,6 +10,7 @@ import { SelectNumCardsComponent } from './select-num-cards/select-num-cards';
 import { SimpleUserCardComponent } from './simple-user-card/simple-user-card';
 import { FlashUserCardComponent } from './flash-user-card/flash-user-card';
 import { ProgressBarComponent } from './progress-bar/progress-bar';
+
 @NgModule({
 	declarations: [FlashCardComponent,
     ChatBubbleComponent,
@@ -17,7 +19,8 @@ import { ProgressBarComponent } from './progress-bar/progress-bar';
     SelectNumCardsComponent,
     SimpleUserCardComponent,
     GamePlayComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    InviteUserCardComponent
     ],
 	imports: [TranslateModule.forChild()],
 	exports: [FlashCardComponent,
@@ -28,7 +31,8 @@ import { ProgressBarComponent } from './progress-bar/progress-bar';
     SimpleUserCardComponent,
     FlashUserCardComponent,
     GamePlayComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    InviteUserCardComponent
 ]
 })
 export class ComponentsModule {}

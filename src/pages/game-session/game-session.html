@@ -28,7 +28,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-14>
-        <player-card [player]="gameSession?.players[0]" [selected]="(gameSession?.playerTurn==0 && gameSession?.step == 2)"></player-card>
+        <player-card [player]="gameSession?.players[0]" [progress]="progress" [selected]="(gameSession?.playerTurn==0 && gameSession?.step == 2)"></player-card>
       </ion-col>
       <ion-col col-14>
         <ion-grid>
@@ -59,15 +59,28 @@
         </ion-grid>
       </ion-col>
       <ion-col col-14>
-        <player-card [player]="gameSession?.players[1]" [selected]="(gameSession?.playerTurn==1 && gameSession?.step == 2)"></player-card>
+        <player-card [player]="gameSession?.players[1]" [progress]="progress" [selected]="(gameSession?.playerTurn==1 && gameSession?.step == 2)"></player-card>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <select-num-cards *ngIf="gameSession?.step == 0" [gameSession]='gameSession' (selectNumCard)="setNumCard($event)"></select-num-cards>
-  <select-cards *ngIf="gameSession?.step == 1" [gameSession]='gameSession' [gameSessionKey]='gameSessionKey' [currentPlayerIndex]='currentPlayerIndex'
-    (done)="playerReady($event)"></select-cards>
-  <game-play *ngIf="gameSession?.step == 2" [gameSession]='gameSession' [gameSessionKey]='gameSessionKey' [currentPlayerIndex]='currentPlayerIndex'></game-play>
+  <select-num-cards *ngIf="gameSession?.step == 0" 
+    [gameSession]='gameSession' 
+    (selectNumCard)="setNumCard($event)">
+  </select-num-cards>
+  <select-cards *ngIf="gameSession?.step == 1" 
+    [gameSession]='gameSession' 
+    [gameSessionKey]='gameSessionKey' 
+    [currentPlayerIndex]='currentPlayerIndex'
+    (done)="playerReady($event)">
+  </select-cards>
+  <game-play *ngIf="gameSession?.step == 2" 
+    [gameSession]='gameSession' 
+    [gameSessionKey]='gameSessionKey' 
+    [currentPlayerIndex]='currentPlayerIndex'
+    (restartTimePlay)='restartTimePlay()'
+    (changeTurn)='changeTurn()'
+    ></game-play>
 
 </ion-content>
 <ion-footer>

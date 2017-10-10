@@ -1,3 +1,5 @@
+import { AuthServiceProvider } from './../../auth-service';
+import { Friend } from './../models/game-session';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from "angularfire2/database";
 import { User, Invite, GameSession, Player } from '../database-providers';
@@ -10,18 +12,31 @@ export class UserService {
   basePath: string = '/users';
   data: any;
   currentUser: User;
-  friends: any;
+  friends: Friend[] = [];
   constructor(
     private db: AngularFireDatabase,
     private toast: ToastController,
     private translate: TranslateService,
     private alertCtrl: AlertController,
     private gameSessionSrvc: GameSessionService,
-    protected app: App
+    protected app: App,
+    private authSrvc: AuthServiceProvider
   ) {
     this.data = this.db.list(this.basePath)
   }
 
+  loadFriends() {
+
+    this.friends = [];
+    
+    this.authSrvc.getFriends().then((res: any) => {
+      let friends = res.data;
+      friends.forEach(friend => {
+        this.authSrvc.getUser(friend.id).then(user => this.friends.push(<Friend>user))
+      })
+    })
+  
+  } 
   getList(query = {}) {
     return this.db.list(this.basePath);
   }

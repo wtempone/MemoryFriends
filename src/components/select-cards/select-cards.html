@@ -5,7 +5,7 @@
             <strong>{{gameSession?.players[0].user.name.split(' ')[0]}}</strong>
             <ion-grid>
                 <ion-row center>
-                    <ion-col col-14 no-margin text-center *ngFor='let card of friendsPlaceHolder; let i = index'>
+                    <ion-col col-14 no-margin text-center *ngFor='let card of gameSession?.friendsPlaceHolder; let i = index'>
                         <div *ngIf="currentPlayerIndex == 0 ">
                             <simple-user-card *ngIf="selectedCards[i]" [user]='selectedCards[i]' [disabled]='doneFired' (selectCard)="unSelect(selectedCards[i],i)"></simple-user-card>
                             <simple-user-card *ngIf="!selectedCards[i]" [user]='card'></simple-user-card>
@@ -23,7 +23,7 @@
             <strong>{{gameSession?.players[1].user.name.split(' ')[0]}}</strong>
             <ion-grid>
                 <ion-row center>
-                    <ion-col col-14 no-margin text-center *ngFor='let card of friendsPlaceHolder; let i = index'>
+                    <ion-col col-14 no-margin text-center *ngFor='let card of gameSession?.friendsPlaceHolder; let i = index'>
                         <div *ngIf="currentPlayerIndex == 1 ">
                             <simple-user-card *ngIf="selectedCards[i]" [user]='selectedCards[i]' [disabled]='doneFired' (selectCard)="unSelect(selectedCards[i],i)"></simple-user-card>
                             <simple-user-card *ngIf="!selectedCards[i]" [user]='card'></simple-user-card>

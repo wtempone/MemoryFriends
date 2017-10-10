@@ -1,3 +1,4 @@
+import { InviteUserCardComponent } from './../../components/invite-user-card/invite-user-card';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { NgModule } from '@angular/core';
@@ -7,6 +8,7 @@ import { MainMenuPage } from './main-menu';
 @NgModule({
   declarations: [
     MainMenuPage,
+    InviteUserCardComponent
   ],
   imports: [
     IonicPageModule.forChild(MainMenuPage),

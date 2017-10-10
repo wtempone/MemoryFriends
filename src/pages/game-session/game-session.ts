@@ -13,12 +13,17 @@ import { Message, Steps, Card } from '../../providers/database/models/game-sessi
   templateUrl: 'game-session.html',
 })
 export class GameSessionPage {
+
   message
   gameSession: GameSession;
   currentPlayerIndex: number;
   gameSessionKey: string;
-  numCards:NumCards;
-  messages:Message[] =[]
+  numCards: NumCards;
+  messages: Message[] = [];
+  interval;
+  progress: number;
+
+  friendsPlaceHolder: Friend[] = [];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private authServiceProvider: AuthServiceProvider,
@@ -29,11 +34,11 @@ export class GameSessionPage {
     private toast: ToastController
   ) {
     this.gameSessionSrvc.observe(this.navParams.data).subscribe(gameSession => {
-    //this.gameSessionSrvc.observe('-KvxiBCiyftD646SKypR').subscribe(gameSession => {
+      //this.gameSessionSrvc.observe('-KvxiBCiyftD646SKypR').subscribe(gameSession => {
       this.gameSession = gameSession;
-      console.log(this.gameSession);
+      //console.log(this.gameSession);
       if (!this.currentPlayerIndex) {
-        this.currentPlayerIndex = this.gameSession.players.findIndex( x => x.user.facebookId == this.userSrvc.currentUser.facebookId);
+        this.currentPlayerIndex = this.gameSession.players.findIndex(x => x.user.facebookId == this.userSrvc.currentUser.facebookId);
         //this.currentPlayerIndex = 0;
       }
       if (!this.gameSessionKey) {
@@ -41,9 +46,28 @@ export class GameSessionPage {
         this.gameSessionKey = parseKey.$key;
       }
       this.gameSessionSrvc.startListenerMenssages(this.gameSessionKey, this.currentPlayerIndex);
+      const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/step`;      
+      this.stepChange()
     });
+    
   }
-
+  stepChange() {
+    const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/step`;
+    this.gameSessionSrvc.db.object(path).$ref.on('value', (step) => {
+      if (step.val() == Steps.Game) {
+        setTimeout(() => {
+          this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 0)
+          this.listernerChangeTurn(true);
+          this.startTimerPlay();          
+        }, 1000);
+      } else {
+        this.listernerChangeTurn(false);  
+        if (this.interval) {
+          clearInterval(this.interval);
+        }
+      }
+    });   
+  }
   gameMenu() {
     this.menuCtrl.toggle('messages');
   }
@@ -51,10 +75,10 @@ export class GameSessionPage {
   sendMessage(text) {
     if (!text) return;
     let id = 0;
-    if (this.gameSession.messages){
+    if (this.gameSession.messages) {
       id = this.gameSession.messages.length;
     }
-    this.gameSessionSrvc.sendMessage(this.gameSessionKey,id,
+    this.gameSessionSrvc.sendMessage(this.gameSessionKey, id,
       <Message>{
         id: id,
         playerIndex: this.currentPlayerIndex,
@@ -63,13 +87,23 @@ export class GameSessionPage {
       }
     ).catch(error => this.handleError(error))
   }
-  setNumCard(numCards:NumCards){
+  setNumCard(numCards: NumCards) {
     this.numCards = numCards;
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/numOfCards`,numCards);
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.SelectCard);  
+    this.friendsPlaceHolder = [];
+    for (var i = 0; i < (numCards.numCards / 4); i++) {
+      this.friendsPlaceHolder.push({
+        id: '0',
+        name: ' ',
+        picture: ' '
+      })
+
+    }
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/friendsPlaceHolder`, this.friendsPlaceHolder);
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/numOfCards`, numCards);
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.SelectCard);
   }
-  playerReady($event){
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/${this.currentPlayerIndex}/ready`,true)
+  playerReady($event) {
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/${this.currentPlayerIndex}/ready`, true)
       .then(() => {
         if (this.gameSession.players[0].ready && this.gameSession.players[1].ready) {
           this.startGame();
@@ -77,14 +111,14 @@ export class GameSessionPage {
       });
   }
 
-  startGame(){
+  startGame() {
     let friendArray: Friend[] = [];
     this.gameSession.players.forEach((player: Player) => {
       player.cards.forEach((friend: Friend) => {
         friendArray.push(friend);
       })
     })
-    let indexArray:number[] =[];
+    let indexArray: number[] = [];
     let index = 0;
 
     for (const item of friendArray) {
@@ -99,10 +133,10 @@ export class GameSessionPage {
 
     this.shuffle(indexArray);
 
-    let cards:Card[] = [];
+    let cards: Card[] = [];
     index = 0;
     for (const item of indexArray) {
-      let card:Card = {
+      let card: Card = {
         ind: index,
         card: friendArray[item]
       }
@@ -111,10 +145,9 @@ export class GameSessionPage {
     }
 
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards`, cards).then(() => {
-      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.Game);  
-    });  
+      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`,  Steps.Game );
+    });
 
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 0)    
   }
 
   shuffle(a) {
@@ -126,6 +159,43 @@ export class GameSessionPage {
       a[j] = x;
     }
   }
+
+  listernerChangeTurn(on:boolean) {
+    const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/playerTurn`;
+    if (on) {
+      this.gameSessionSrvc.db.object(path).$ref.on('value', (turn) => {
+        if (!this.interval) {
+          this.startTimerPlay();
+        }
+      });
+    } else {
+      this.gameSessionSrvc.db.object(path).$ref.off('value');        
+    }
+  }
+
+  startTimerPlay() {
+    this.progress = 100;
+    this.interval = setInterval(() => {
+      this.progress--
+      if (this.progress < 0) {
+        clearInterval(this.interval);        
+      }
+    }, 1000)
+  }
+
+  restartTimePlay() {
+    clearInterval(this.interval);
+    this.startTimerPlay()    
+  }
+
+  changeTurn() {
+    if (this.currentPlayerIndex == 0) {
+      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 1);
+    } else {
+      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/playerTurn`, 0);
+    }
+  }
+
   private handleError(error) {
     const toast = this.toast.create({ message: error, duration: 3000, position: 'top' });
     toast.present();

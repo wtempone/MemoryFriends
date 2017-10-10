@@ -7,14 +7,13 @@ import { Component } from '@angular/core';
  * Components.
  */
 @Component({
-  inputs: ['player:player','selected:selected'],
+  inputs: ['player:player','selected:selected','progress:progress'],
   selector: 'player-card',
   templateUrl: 'player-card.html'
 })
 export class PlayerCardComponent {
 
-  text: string;
-
+  progress:number;
   constructor() {
 
   }

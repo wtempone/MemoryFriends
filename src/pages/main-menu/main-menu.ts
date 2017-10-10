@@ -1,3 +1,4 @@
+import { Friend } from './../../providers/database/models/game-session';
 import { AuthServiceProvider } from './../../providers/auth-service';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Component, ViewChild } from '@angular/core';
@@ -24,24 +25,16 @@ export class MainMenuPage {
     public alertController: AlertController,
     private translate: TranslateService,
     public userSrvc: UserService,
-    private authServiceProvider: AuthServiceProvider,
+    private authSrvc: AuthServiceProvider,
     private toast: ToastController
   ) {
-
     if (userSrvc.currentUser) {      
-      authServiceProvider.getFriends().then((friends: any) => {
-        this.userSrvc.friends = [];
-        this.userSrvc.startListenerInvites();
-        friends.data.forEach(friend => {
-          this.authServiceProvider.callFacebookApi(friend.id + '?fields=picture,name').then(fbprofile => {
-            this.userSrvc.friends.push(fbprofile);
-          });
-        });
-      });
+      this.userSrvc.loadFriends();
+      this.userSrvc.startListenerInvites();      
     }
   }
 
-  sendInvite(inviteUser: any) {
+  sendInvite(inviteUser: Friend) {
     this.translate.get([
       "DO_YOU_ENVITE_A_FRIEND",
       "DO_YOU_ENVITE_A_FRIEND_MESSAGE",

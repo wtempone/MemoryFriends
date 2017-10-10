@@ -1,0 +1,10 @@
+invite-user-card {
+  .image-user{
+    padding: 5%;
+    margin:0;
+    width:100%;
+  }
+  .selected {
+    filter: blur(1px) opacity(.5);
+  }
+}

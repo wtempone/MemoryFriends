@@ -55,16 +55,21 @@ export class GameSessionService {
     return this.db.object(itemPath).set(value);
   }
 
+  save(path: string, value) {
+    const itemPath = `${this.basePath}/${path}`;
+    return this.db.object(itemPath).$ref.set(value);
+  }
   create(rec) {
     return this.data.push(rec);
   }
 
-  update(key: string, value: any): void {
-    this.data.update(key, value).catch(error => this.handleError(error))
+  update(path: string, value: any): void {
+    const itemPath = `${this.basePath}/${path}`;    
+    this.db.object(itemPath).update(value);
   }
 
   delete(key: string): void {
-    this.data.remove(key).catch(error => this.handleError(error))
+    this.db.object(key).remove().catch(error => this.handleError(error))
   }
 
   deleteAll(): void {
@@ -149,6 +154,8 @@ export class GameSessionService {
     }
   }
 
+
+  
   private handleError(error) {
     const toast = this.toast.create({ message: error, duration: 3000, position: 'top' });
     toast.present();

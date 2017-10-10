@@ -11,14 +11,13 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class SelectCardsComponent {
   @Output() done = new EventEmitter();
-  
+
   friends: Friend[] = [];
-  friendsPlaceHolder: Friend[] = [];
   selectedCards = []
   currentPlayerIndex: number;
   gameSession: GameSession;
   gameSessionKey: string;
-  doneFired:boolean;
+  doneFired: boolean;
   constructor(
     public gameSessionSrvc: GameSessionService,
     public userSrvc: UserService,
@@ -33,22 +32,11 @@ export class SelectCardsComponent {
     }
   }
   load() {
-    this.authSrvc.getFriends().then((res: any) => {
-      let friends = res.data;
-      friends.forEach(friend => {
-        this.authSrvc.getUser(friend.id).then(user => this.friends.push(<Friend>user))
-      })
-      for (var i = 0; i < (this.gameSession.numOfCards.numCards / 4); i++) {
-        this.friendsPlaceHolder.push({
-          id:'',
-          name: '',
-          picture: ''
-        })
-      }
-    })
+    this.userSrvc.loadFriends();
+    this.friends = this.userSrvc.friends;
   }
-  
-  cardSelected(card:Friend): boolean{
+
+  cardSelected(card: Friend): boolean {
     let selected = false;
     this.gameSession.players.forEach(player => {
       if (player.cards) {
@@ -58,28 +46,28 @@ export class SelectCardsComponent {
             return;
           }
         });
-        if(selected) {
+        if (selected) {
           return;
         }
       }
-    })    
+    })
     return selected;
   }
-  
+
   select(card: Friend, select, index: number) {
     if (!(this.selectedCards.length < (this.gameSession.numOfCards.numCards / 4))) {
       card.selected = false;
       return;
     }
-    
-    if (this.cardSelected(card)){
+
+    if (this.cardSelected(card)) {
       this.friends.forEach(y => {
         if (y.id == card.id) {
           y.selected = true;
           return;
         }
       });
-      return;      
+      return;
     }
 
     if (select) {
@@ -112,7 +100,7 @@ export class SelectCardsComponent {
     this.gameSessionSrvc.setAllPlayersCard(this.gameSessionKey, this.currentPlayerIndex, this.selectedCards);
   }
 
-  doneButton(){
+  doneButton() {
     this.doneFired = true;
     this.done.emit(true);
   }
