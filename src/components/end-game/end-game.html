@@ -1,4 +1,46 @@
 <div [ngClass]="{'bounceInLeft' : (gameSession)}">
-  <ion-title class="bounceInLeft" text-center>{{ 'DRAW' | translate }}</ion-title>
-  <ion-title class="bounceInLeft" text-center>{{ 'WIN' | translate }}</ion-title>
+  <div *ngIf="gameSession?.players[0].score == gameSession?.players[1].score">
+    <ion-title class="bounceInLeft" text-center>{{ 'DRAW' | translate }}</ion-title>
+  </div>
+  <div class="user-info" *ngIf="gameSession?.players[0].score > gameSession?.players[1].score">
+      <img [src]="gameSession?.players[0].user.profilePic.data.url" />
+      <ion-title class="bounceInLeft" text-center>{{ 'WIN' | translate: { playerName: gameSession?.players[0].user.name.split(" ")[0] } }}</ion-title>
+  </div>
+  <div class="user-info" *ngIf="gameSession?.players[0].score < gameSession?.players[1].score">
+      <img [src]="gameSession?.players[1].user.profilePic.data.url" />
+      <ion-title class="bounceInLeft" text-center>{{ 'WIN' | translate: { playerName: gameSession?.players[1].user.name.split(" ")[0] } }}</ion-title>
+  </div>
 </div>
+
+<ion-grid>
+  <ion-row no-padding no-margin>
+    <ion-col col-7 no-padding></ion-col>
+    <ion-col col-28 no-padding>
+      <button block ion-button icon-left (click)="restart()">
+        <ion-icon name="refresh"></ion-icon>
+        {{ 'RESTART_GAME' | translate }}
+      </button>
+    </ion-col>
+    <ion-col col-7 no-padding></ion-col>
+  </ion-row>
+  <ion-row no-padding no-margin>
+    <ion-col col-7 no-padding></ion-col>
+    <ion-col col-28 no-padding>
+      <button block ion-button icon-left (click)="selectCards()">
+        <ion-icon name="undo"></ion-icon>
+        {{ 'RESTART_GAME_NEW_CARDS' | translate }}
+      </button>
+    </ion-col>
+    <ion-col col-7 no-padding></ion-col>
+  </ion-row>
+  <ion-row no-padding no-margin>
+    <ion-col col-7 no-padding></ion-col>
+    <ion-col col-28 no-padding>
+      <button block ion-button icon-left (click)="exit()">
+        <ion-icon name="close"></ion-icon>
+        {{ 'EXIT_GAME' | translate }}
+      </button>
+    </ion-col>
+    <ion-col col-7 no-padding></ion-col>
+  </ion-row>
+</ion-grid>

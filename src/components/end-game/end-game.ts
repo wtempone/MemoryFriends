@@ -24,4 +24,15 @@ export class EndGameComponent {
     public authSrvc: AuthServiceProvider
   ) {
   }
+  selectCards(){
+    this.newGame.emit();
+  }
+
+  exit(){
+    this.exitGame.emit();
+  }
+
+  restart(){
+    this.restartGame.emit();
+  }
 }

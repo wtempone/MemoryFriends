@@ -55,6 +55,12 @@ export class GameSessionService {
     return this.db.object(itemPath).set(value);
   }
 
+  removeValue(path: string) {
+    const itemPath = `${this.basePath}/${path}`;
+    return this.db.object(itemPath).remove();
+  }
+
+
   save(path: string, value) {
     const itemPath = `${this.basePath}/${path}`;
     return this.db.object(itemPath).$ref.set(value);

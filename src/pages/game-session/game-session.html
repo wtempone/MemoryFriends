@@ -76,9 +76,9 @@
     (changeTurn)='changeTurn($event)'>
   </game-play>
 
-  <!-- <end-game *ngIf="gameSession?.step == 2" [gameSession]='gameSession' [gameSessionKey]='gameSessionKey' [currentPlayerIndex]='currentPlayerIndex'
-    (newGame)='newGame()' (exitGame)='exit()' (restartGame)='restart()'>
-  </end-gamey> -->
+  <end-game *ngIf="gameSession?.step == 3" [gameSession]='gameSession' [gameSessionKey]='gameSessionKey' [currentPlayerIndex]='currentPlayerIndex'
+    (newGame)='newGame()' (exitGame)='exit()' (restartGame)='restartGame()'>
+  </end-game>
 
 
 </ion-content>

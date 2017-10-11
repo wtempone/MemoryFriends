@@ -34,7 +34,8 @@ export interface Message {
 export enum Steps {
     ConfigNumCards,
     SelectCard,
-    Game
+    Game,
+    EndGame    
 }
 
 export interface NumCards{

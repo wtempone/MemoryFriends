@@ -49,27 +49,24 @@ export class GameSessionPage {
         this.gameSessionKey = parseKey.$key;
       }
       this.gameSessionSrvc.startListenerMenssages(this.gameSessionKey, this.currentPlayerIndex);
-      const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/step`;
       this.stepChange()
     });
 
   }
+  
   stepChange() {
     const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/step`;
     this.gameSessionSrvc.db.object(path).$ref.on('value', (step) => {
       if (step.val() == Steps.Game) {
         if (!this.started) {
-            this.started = true;
-            this.startTimerPlay(true);
-            this.gameSessionSrvc.db.object(path).$ref.off();          
-            this.listernerChangeTurn(true);
+            this.startGame()          
           }
       } else {
-        this.listernerChangeTurn(false);
-        //this.startTimerPlay(false);
+        this.stopGame();
       }
     });
   }
+
   gameMenu() {
     this.menuCtrl.toggle('messages');
   }
@@ -101,6 +98,7 @@ export class GameSessionPage {
       })
 
     }
+
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/friendsPlaceHolder`, this.friendsPlaceHolder);
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/numOfCards`, numCards);
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.SelectCard);
@@ -110,12 +108,19 @@ export class GameSessionPage {
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/${this.currentPlayerIndex}/ready`, true)
       .then(() => {
         if (this.gameSession.players[0].ready && this.gameSession.players[1].ready) {
-          this.startGame();
+          this.restartGame();
         }
       });
   }
 
+  stopGame() {
+    this.started = false;
+    this.listernerChangeTurn(false);
+    this.startTimerPlay(false);
+  }
+
   startGame() {
+    this.started = true;    
     let friendArray: Friend[] = [];
     this.gameSession.players.forEach((player: Player) => {
       player.cards.forEach((friend: Friend) => {
@@ -148,9 +153,19 @@ export class GameSessionPage {
       index++;
     }
 
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards`, cards);
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.Game);
     this.turns = [];
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/0/score`, 0);
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/1/score`, 0);
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards`, cards);
+
+    this.gameSessionSrvc.removeValue(`${this.gameSessionKey}/turn`);
+    
+    this.startTimerPlay(true);
+    this.listernerChangeTurn(true);
+  }
+
+  restartGame() {
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.Game);   
   }
 
   shuffle(a) {
@@ -190,17 +205,21 @@ export class GameSessionPage {
   }
 
   checkEndGame(): boolean {
-    let numHits:number = 0;
-    this.gameSession.players.forEach(player => {
-      numHits += player.score;
-    });
-    return numHits == (this.gameSession.numOfCards.numCards / 2);
+    return (this.gameSession.players[0].score + this.gameSession.players[1].score)
+      == (this.gameSession.numOfCards.numCards / 2);
   }
    
   endGame() {
-    alert('Acabou!');
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.EndGame);    
   }
 
+  newGame(){
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.ConfigNumCards);
+  }
+  exit(){
+    this.gameSessionSrvc.delete(this.gameSessionKey);
+  }
+  
   startTimerPlay(on) {
     this.restartTimePlay();
     if (on) {
@@ -215,7 +234,8 @@ export class GameSessionPage {
         }
       }, 30)
     } else {
-      clearInterval(this.interval);
+      if (this.interval)
+        clearInterval(this.interval);
     }
   }
 
@@ -252,6 +272,7 @@ export class GameSessionPage {
       this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards/${card.ind}`, card)
     })
   }
+
   private handleError(error) {
     const toast = this.toast.create({ message: error, duration: 3000, position: 'top' });
     toast.present();

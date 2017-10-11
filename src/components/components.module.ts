@@ -1,3 +1,5 @@
+import { CommonModule } from '@angular/common';  
+import { BrowserModule } from '@angular/platform-browser';
 import { InviteUserCardComponent } from './invite-user-card/invite-user-card';
 import { GamePlayComponent } from './game-play/game-play';
 import { SelectCardsComponent } from './select-cards/select-cards';
@@ -11,6 +13,7 @@ import { SimpleUserCardComponent } from './simple-user-card/simple-user-card';
 import { FlashUserCardComponent } from './flash-user-card/flash-user-card';
 import { ProgressBarComponent } from './progress-bar/progress-bar';
 import { EndGameComponent } from './end-game/end-game';
+import { IonicPageModule } from 'ionic-angular';
 
 @NgModule({
 	declarations: [FlashCardComponent,
@@ -19,12 +22,13 @@ import { EndGameComponent } from './end-game/end-game';
     SelectCardsComponent,
     SelectNumCardsComponent,
     SimpleUserCardComponent,
+    FlashUserCardComponent,
     GamePlayComponent,
     ProgressBarComponent,
     InviteUserCardComponent,
     EndGameComponent
     ],
-	imports: [TranslateModule.forChild()],
+	imports: [CommonModule,IonicPageModule,TranslateModule.forChild()],
 	exports: [FlashCardComponent,
     ChatBubbleComponent,
     PlayerCardComponent,

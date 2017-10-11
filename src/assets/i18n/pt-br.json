@@ -94,5 +94,8 @@
   "WAIT_OPPONENT_RESPONSE":"Aguardando oponente...",
   "SCORE":"Placar",
   "DRAW":"Jogo empatado!",
-  "WIN":"{{value}} venceu o jogo."
+  "WIN":"{{playerName}} venceu o jogo.",
+  "RESTART_GAME":"Reiniciar Partida",
+  "RESTART_GAME_NEW_CARDS":"Selecionar novas cartas",
+  "EXIT_GAME":"Sair"
 }
