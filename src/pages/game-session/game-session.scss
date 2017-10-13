@@ -1,5 +1,10 @@
 page-game-session {
-    ion-footer {
+
+    ion-title {
+        font-size: 4vw!important;
+    }
+    
+    ion-footer {        
         .item-inner{
             border:0 !important;
             padding:0 !important;
@@ -9,6 +14,7 @@ page-game-session {
         }
         ion-input {
             background-color: #ffffff;
+            color: #242424;
             border: 1px solid #cccccc;
             border-radius: 10vw;
             padding-left: 10px;

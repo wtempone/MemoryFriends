@@ -7,10 +7,19 @@
     </div>
   </div>
   <div padding>
-    <button ion-button icon-left block outline (click)="signInWithFacebook()" class="signup">
-     <ion-icon name="logo-facebook"></ion-icon>
-      {{ 'LOGIN' | translate }}
-    </button>
+    <ion-grid>
+      <ion-row> 
+        <ion-col col-4>
+        </ion-col>
+        <ion-col col-34>
+          <button ion-button icon-left block round (click)="signInWithFacebook()" class="signup">
+            <ion-icon name="logo-facebook"></ion-icon>
+            {{ 'LOGIN' | translate }}
+          </button>
+        </ion-col>
+        <ion-col col-4>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
-  
 </ion-content>

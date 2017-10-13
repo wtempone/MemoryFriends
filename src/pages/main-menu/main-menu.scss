@@ -3,15 +3,19 @@ page-main-menu {
   .splash-info {
     position: relative;
     z-index: 2;
-    margin-top: 20px;
+    margin-top: 5vh;
     text-align: center;
     img {
       border-radius: 50%;
-      width: 40vw;
-      height: 40vw;
+      width: 20vh;
+      height: 20vh;
     }
   }
-  
+
+  h5 {
+    margin: 4vw;
+    font-size: 4vw;
+  }
   .splash-logo {
     margin: auto;
     background: url('../assets/img/appicon.png') repeat transparent;
@@ -20,10 +24,9 @@ page-main-menu {
     height: 128px;
   }
   .splash-intro {
-    font-size: 20px;
-    line-height: 60px;
+    font-size: 5vw;
+    line-height: 15vw;
     font-weight: bold;
-    max-width: 80%;
     margin: auto;
   }
   button.login {

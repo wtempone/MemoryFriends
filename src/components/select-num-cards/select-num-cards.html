@@ -3,9 +3,9 @@
     <ion-grid>
         <ion-row center>
             <ion-col col-14 no-pading text-center *ngFor='let numcard of gameSessionSrvc.numCards'>
-                <ion-card no-margin class="card-number" (click)="set(numcard)">
-                    <ion-title>{{numcard.numCards}}</ion-title>
-                </ion-card>
+                <button ion-button icon-left block class="card-number" (click)="set(numcard)">
+                    {{numcard.numCards}}
+                </button>
             </ion-col>
         </ion-row>
     </ion-grid>

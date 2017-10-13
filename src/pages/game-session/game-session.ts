@@ -109,7 +109,7 @@ export class GameSessionPage {
       .then(() => {
         if (this.gameSession.players[0].ready && this.gameSession.players[1].ready) {
           this.restartGame();
-        }
+        } 
       });
   }
 

@@ -14,34 +14,53 @@
 
     <h5 text-center>
       {{ 'INVITE_YOUR_FRIENDS' | translate }}
-    </h5>    
+    </h5>
     <ion-grid>
-        <ion-row center>
-            <ion-col col-7 col-sm-7 col-md-6 col-lg-6 col-xl-6 no-padding no-margin text-center *ngFor='let friend of userSrvc.friends; let i = index'>
-                <invite-user-card [user]='friend' (selectCard)="sendInvite(friend)"></invite-user-card>
-            </ion-col>
-        </ion-row>
+      <ion-row center>
+        <ion-col col-7 col-sm-7 col-md-6 col-lg-6 col-xl-6 no-padding no-margin text-center *ngFor='let friend of userSrvc.friends; let i = index'>
+          <invite-user-card [user]='friend' (selectCard)="sendInvite(friend)"></invite-user-card>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </div>
 
+  <ion-grid>
+    <ion-row>
+      <ion-col col-4>
+      </ion-col>
+      <ion-col col-34>
+        <button ion-button icon-left block round (click)="solo()" class="signup">
+          <ion-icon name="person"></ion-icon>
+          {{ 'SOLO' | translate }}
+        </button>
+      </ion-col>
+      <ion-col col-4>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+      </ion-col>
+      <ion-col col-34>
+          <button ion-button icon-left block round (click)="multiplayer()" class="signup">
+              <ion-icon name="people"></ion-icon>
+              {{ 'MULTIPLAYER' | translate }}
+            </button>
+      </ion-col>
+      <ion-col col-4>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+      </ion-col>
+      <ion-col col-34>
+          <button ion-button icon-left block round color="danger" (click)="cancel()" class="signup">
+              <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+              {{ 'BACK_BUTTON_TEXT' | translate }}
+            </button>
+      </ion-col>
+      <ion-col col-4>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <div padding>
-    <button ion-button icon-left block outline (click)="solo()" class="signup">
-      <ion-icon name="person"></ion-icon>
-      {{ 'SOLO' | translate }}
-    </button>
-  </div>
-
-  <div padding>
-    <button ion-button icon-left block outline (click)="multiplayer()" class="signup">
-      <ion-icon name="people"></ion-icon>
-      {{ 'MULTIPLAYER' | translate }}
-    </button>
-  </div>
-  <div padding>
-    <button ion-button icon-left block outline color="danger" (click)="cancel()" class="signup">
-      <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-      {{ 'BACK_BUTTON_TEXT' | translate }}
-    </button>
-  </div>
 </ion-content>

@@ -1,8 +1,8 @@
 player-card {
   .card {
-    padding:0;
+    padding: 1vw;
     .card-content{
-      padding: 10px 10px 0px 10px;
+      padding: 1vw 1vw 0 1vw;
     }
     p {        
       background-color: #ffffff;
@@ -12,7 +12,8 @@ player-card {
       border-radius: 1vw;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;      
+      text-overflow: ellipsis; 
+      font-size: 3vw;    
     }
 
   }

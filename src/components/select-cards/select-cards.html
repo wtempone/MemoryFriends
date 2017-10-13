@@ -60,7 +60,7 @@
         <ion-row no-padding no-margin>
             <ion-col col-14 no-padding></ion-col>
             <ion-col col-14 no-padding>
-                <button *ngIf="!doneFired && (selectedCards.length == (gameSession.numOfCards.numCards / 4))" block ion-button icon-left
+                <button *ngIf="!doneFired && (selectedCards.length == (gameSession.numOfCards.numCards / 4))" block ion-button icon-left round
                     (click)="doneButton()">
                     <ion-icon name="checkmark"></ion-icon>
                     {{ 'DONE_BUTTON' | translate }}
