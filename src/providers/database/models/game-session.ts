@@ -9,6 +9,7 @@ export interface Friend{
 
 export class Player {
     score : number;
+    wins?: number;
     ready? : boolean;
     user : User;
     cards?: Friend[];

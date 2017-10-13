@@ -3,11 +3,11 @@
 <ion-content>
 
 
-  <div class="splash-info">
+  <div class="user">
     <img [src]="userSrvc.currentUser?.profilePic.data.url" />
-    <div class="splash-intro">
+    <p>
       {{ userSrvc.currentUser?.name }}
-    </div>
+    </p>
   </div>
 
   <div *ngIf="userSrvc.friends">
@@ -15,13 +15,16 @@
     <h5 text-center>
       {{ 'INVITE_YOUR_FRIENDS' | translate }}
     </h5>
-    <ion-grid>
-      <ion-row center>
-        <ion-col col-7 col-sm-7 col-md-6 col-lg-6 col-xl-6 no-padding no-margin text-center *ngFor='let friend of userSrvc.friends; let i = index'>
-          <invite-user-card [user]='friend' (selectCard)="sendInvite(friend)"></invite-user-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+
+    <div class="friends-container">
+      <ion-grid>
+        <ion-row center>
+          <ion-col col-7 col-sm-7 col-md-6 col-lg-6 col-xl-6 no-padding no-margin text-center *ngFor='let friend of userSrvc.friends; let i = index'>
+            <invite-user-card [user]='friend' (selectCard)="sendInvite(friend)"></invite-user-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
   </div>
 
   <ion-grid>
@@ -41,10 +44,10 @@
       <ion-col col-4>
       </ion-col>
       <ion-col col-34>
-          <button ion-button icon-left block round (click)="multiplayer()" class="signup">
-              <ion-icon name="people"></ion-icon>
-              {{ 'MULTIPLAYER' | translate }}
-            </button>
+        <button ion-button icon-left block round (click)="multiplayer()" class="signup">
+          <ion-icon name="people"></ion-icon>
+          {{ 'MULTIPLAYER' | translate }}
+        </button>
       </ion-col>
       <ion-col col-4>
       </ion-col>
@@ -53,10 +56,10 @@
       <ion-col col-4>
       </ion-col>
       <ion-col col-34>
-          <button ion-button icon-left block round color="danger" (click)="cancel()" class="signup">
-              <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-              {{ 'BACK_BUTTON_TEXT' | translate }}
-            </button>
+        <button ion-button icon-left block round color="danger" (click)="cancel()" class="signup">
+          <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+          {{ 'BACK_BUTTON_TEXT' | translate }}
+        </button>
       </ion-col>
       <ion-col col-4>
       </ion-col>

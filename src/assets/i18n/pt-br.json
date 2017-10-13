@@ -97,5 +97,6 @@
   "WIN":"{{playerName}} venceu o jogo.",
   "RESTART_GAME":"Reiniciar Partida",
   "RESTART_GAME_NEW_CARDS":"Selecionar novas cartas",
-  "EXIT_GAME":"Sair"
+  "EXIT_GAME":"Sair",
+  "WINS":"Partidas"
 }

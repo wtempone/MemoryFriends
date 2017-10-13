@@ -88,6 +88,8 @@ $chat-bubble:(
 .toast-success {
   > div{
     background-color:#bffcbf!important;
+    border-radius: 3vh;
+    border: 1px solid #000000;
     .toast-message {
       color: #000000;
     }    
@@ -97,16 +99,22 @@ $chat-bubble:(
 $grid-columns:42;
 
 .button {
-  font-size: 4vw !important;
+  font-size: 2vh !important;
+  text-transform: none !important;
+  padding: 1vh !important;
 
   &.activated {
     background-color: rgb(220, 220, 220);
   }
 }
 
+.input-has-focus{
+  border: transparent !important;
+}
+
 .title, .toolbar-title, .bar-button {
-  font-size: 4vw !important;
+  font-size: 3vh !important;
 }
 .toolbar {
-  padding:3vw !important;  
+  padding:2vh !important;  
 }

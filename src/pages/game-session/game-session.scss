@@ -1,7 +1,31 @@
 page-game-session {
 
+    .game-header {
+        width: 55vh;
+        margin:auto;
+        .score {
+            color: #ffffff;
+            font-size: 3vh;
+            line-height: 2.5vh;
+        }
+        .wins {
+            color: #888888;
+            font-size: 2vh;
+            line-height: 1.5vh;
+        }
+    }
+
+    .game-component{
+        width: 55vh;        
+        height: 55vh;
+        margin: 0 auto auto auto;
+    }
+    .player-card-game {
+        height: 20vh !important;
+        margin: auto !important;
+    }
     ion-title {
-        font-size: 4vw!important;
+        font-size: 4vh!important;
     }
     
     ion-footer {        
@@ -10,7 +34,7 @@ page-game-session {
             padding:0 !important;
         }
         ion-toolbar {
-            padding: 5px;            
+            padding: 1vh;            
         }
         ion-input {
             background-color: #ffffff;

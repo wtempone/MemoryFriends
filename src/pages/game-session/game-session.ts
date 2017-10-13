@@ -24,8 +24,8 @@ export class GameSessionPage {
   timeOut;
   progress: number;
   waiting: boolean;
-  turns:Turn[] = [];
-  started:boolean = false;
+  turns: Turn[] = [];
+  started: boolean = false;
   friendsPlaceHolder: Friend[] = [];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -53,14 +53,14 @@ export class GameSessionPage {
     });
 
   }
-  
+
   stepChange() {
     const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/step`;
     this.gameSessionSrvc.db.object(path).$ref.on('value', (step) => {
       if (step.val() == Steps.Game) {
         if (!this.started) {
-            this.startGame()          
-          }
+          this.startGame()
+        }
       } else {
         this.stopGame();
       }
@@ -109,7 +109,7 @@ export class GameSessionPage {
       .then(() => {
         if (this.gameSession.players[0].ready && this.gameSession.players[1].ready) {
           this.restartGame();
-        } 
+        }
       });
   }
 
@@ -120,7 +120,7 @@ export class GameSessionPage {
   }
 
   startGame() {
-    this.started = true;    
+    this.started = true;
     let friendArray: Friend[] = [];
     this.gameSession.players.forEach((player: Player) => {
       player.cards.forEach((friend: Friend) => {
@@ -152,6 +152,12 @@ export class GameSessionPage {
       cards.push(card);
       index++;
     }
+    // passa a  vez para pardedor
+    if (this.gameSession.playerTurn == 0 && this.gameSession.players[0].score > this.gameSession.players[1].score) {
+      this.changePlayer();
+    } else  if (this.gameSession.playerTurn == 1 && this.gameSession.players[0].score < this.gameSession.players[1].score) {
+      this.changePlayer();
+    }
 
     this.turns = [];
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/0/score`, 0);
@@ -159,13 +165,13 @@ export class GameSessionPage {
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards`, cards);
 
     this.gameSessionSrvc.removeValue(`${this.gameSessionKey}/turn`);
-    
+
     this.startTimerPlay(true);
     this.listernerChangeTurn(true);
   }
 
   restartGame() {
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.Game);   
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.Game);
   }
 
   shuffle(a) {
@@ -182,18 +188,18 @@ export class GameSessionPage {
     const path = `${this.gameSessionSrvc.basePath}/${this.gameSessionKey}/turn`;
     if (on) {
       this.gameSessionSrvc.db.object(path).$ref.on('value', (res) => {
-        let turn:Turn = res.val();
+        let turn: Turn = res.val();
         if (!turn) return;
         let exists = this.turns.filter(x => x.id == turn.id).length > 0;
         //console.log(`listener ==> turn.val(): ${turn.id} exists: ${exists} controle interno turn:${this.turns}`);
-        if (exists) return;        
+        if (exists) return;
         this.progress = 100;
         this.turns.push(turn);
         if (this.currentPlayerIndex == this.gameSession.playerTurn) {
           if (!turn.hit) {
             this.changePlayer();
           } else {
-            if (this.checkEndGame()){
+            if (this.checkEndGame()) {
               this.endGame();
             }
           }
@@ -208,29 +214,48 @@ export class GameSessionPage {
     return (this.gameSession.players[0].score + this.gameSession.players[1].score)
       == (this.gameSession.numOfCards.numCards / 2);
   }
-   
+
   endGame() {
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.EndGame);    
+    if (this.gameSession.players[0].score > this.gameSession.players[1].score)
+    {
+      let wins:number = 0;
+      if (this.gameSession.players[0].wins) {
+        wins = this.gameSession.players[0].wins;
+      }
+      wins++
+      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/0/wins`, wins);      
+    }
+
+    if (this.gameSession.players[0].score < this.gameSession.players[1].score)
+    {
+      let wins:number = 0;
+      if (this.gameSession.players[1].wins) {
+        wins = this.gameSession.players[1].wins;
+      }
+      wins++
+      this.gameSessionSrvc.setValue(`${this.gameSessionKey}/players/1/wins`, wins);      
+    }
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.EndGame);
   }
 
-  newGame(){
+  newGame() {
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.ConfigNumCards);
   }
-  exit(){
+  exit() {
     this.gameSessionSrvc.delete(this.gameSessionKey);
   }
-  
+
   startTimerPlay(on) {
     this.restartTimePlay();
     if (on) {
       //console.log('start time');
       this.interval = setInterval(() => {
         if (this.progress >= 0.000) {
-          this.progress -= 0.2;
+          this.progress -= 0.3;
           if (this.progress < 0.000) {
             //console.log(this.progress);
             this.changeTurn(false);
-          }  
+          }
         }
       }, 30)
     } else {
@@ -245,16 +270,16 @@ export class GameSessionPage {
 
   changeTurn(hit: boolean) {
     //console.log('change turn')
-    let nextId:number = 0;
+    let nextId: number = 0;
     if (this.gameSession.turn) {
       nextId = this.gameSession.turn.id + 1;
     }
-    let nextTurn:Turn = {
+    let nextTurn: Turn = {
       id: nextId,
       hit: hit
     }
     this.unFlipCards(this.gameSession.cards.filter(x => x.flipped && !x.resolved));
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/turn`, nextTurn);    
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/turn`, nextTurn);
   }
 
   changePlayer() {

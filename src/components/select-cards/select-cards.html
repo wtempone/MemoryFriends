@@ -1,12 +1,12 @@
 <div [ngClass]="{'bounceInLeft' : (gameSession)}">
-    <ion-title class="bounceInLeft" text-center>{{ 'SELECTED_CARDS' | translate }}</ion-title>
+    <p class="title-select" text-center>{{ 'SELECTED_CARDS' | translate }}</p>
     <ion-grid class="bounceInLeft">
         <ion-row class="card card-ios" center>
             <ion-col text-center col-21>
                 <strong>{{gameSession?.players[0].user.name.split(' ')[0]}}</strong>
                 <ion-grid>
                     <ion-row center>
-                        <ion-col col-14 no-margin text-center *ngFor='let card of gameSession?.friendsPlaceHolder; let i = index'>
+                        <ion-col class="select-card" col-14 no-margin text-center *ngFor='let card of gameSession?.friendsPlaceHolder; let i = index'>
                             <div *ngIf="currentPlayerIndex == 0 ">
                                 <simple-user-card *ngIf="selectedCards[i]" [user]='selectedCards[i]' [disabled]='doneFired' (selectCard)="unSelect(selectedCards[i],i)"></simple-user-card>
                                 <simple-user-card *ngIf="!selectedCards[i]" [user]='card'></simple-user-card>
@@ -24,7 +24,7 @@
                 <strong>{{gameSession?.players[1].user.name.split(' ')[0]}}</strong>
                 <ion-grid>
                     <ion-row center>
-                        <ion-col col-14 no-margin text-center *ngFor='let card of gameSession?.friendsPlaceHolder; let i = index'>
+                        <ion-col class="select-card" col-14 no-margin text-center *ngFor='let card of gameSession?.friendsPlaceHolder; let i = index'>
                             <div *ngIf="currentPlayerIndex == 1 ">
                                 <simple-user-card *ngIf="selectedCards[i]" [user]='selectedCards[i]' [disabled]='doneFired' (selectCard)="unSelect(selectedCards[i],i)"></simple-user-card>
                                 <simple-user-card *ngIf="!selectedCards[i]" [user]='card'></simple-user-card>
@@ -42,7 +42,7 @@
     </ion-grid>
 
     <div *ngIf="!doneFired">
-        <ion-title text-center>{{ 'SELECT_CARDS' | translate }}</ion-title>
+        <p class="title-select" text-center>{{ 'SELECT_CARDS' | translate }}</p>
         <ion-grid>
             <ion-row center>
                 <ion-col col-7 col-sm-7 col-md-6 col-lg-6 col-xl-6 no-padding no-margin text-center *ngFor='let friend of friends; let i = index'>
@@ -53,7 +53,7 @@
     </div>
 
     <div *ngIf="doneFired">
-        <ion-title text-center>{{ 'WAIT_OPPONENT_RESPONSE' | translate }}</ion-title>
+        <p class="title-select" text-center>{{ 'WAIT_OPPONENT_RESPONSE' | translate }}</p>
     </div>
 
     <ion-grid>

@@ -108,7 +108,10 @@ export class GameSessionService {
       const msg: Message = <Message>res.val()
       if (msg.playerIndex != playerIndex) {
         if (this.checkMessage(key, msg.id)) return;
-        const toast = this.toast.create({ message: msg.text, duration: 3000, position: 'bottom', cssClass: 'toast-success' });
+        const toast = this.toast.create({ message: msg.text, 
+          duration: 3000, 
+          position: 'top', 
+          cssClass: 'toast-success' });
         toast.present();
         let ind = 0;
         let messagesCollection = this.messages.filter(x => x.gameSessionKey == key);

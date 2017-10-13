@@ -1,46 +1,23 @@
 page-welcome {
-    .splash-bg {
-      position: relative;
-      //background: url('../assets/img/splashbg.png') no-repeat transparent;
-      background-size: cover;
-      height: 35vh;
-      z-index: 1;
-      background-repeat: repeat-x;
-      animation: animatedBackground 40s linear infinite;
-    }
-  
-    @keyframes animatedBackground {
-      from { background-position: 0 0; }
-      to { background-position: 100% 0; }
-    }
-  
-    .splash-info {
-      position: relative;
-      z-index: 2;
-      margin-top: -64px;
-      text-align: center;
-    }
-    .splash-logo {
-      margin: auto;
-      background: url('../assets/img/appicon.png') repeat transparent;
-      background-size: 100%;
+
+  .logo{
+    margin-top: 30vh;
+    text-align: center;    
+
+    img{
       width: 20vh;
       height: 20vh;
     }
-    .splash-intro {
-      font-size: 5vw;
-      line-height: 15vw;
+
+    p {
       font-weight: bold;
-      max-width: 80%;
-      margin: auto;
-    }
-    button.signup {
-      margin-top: 2vw;
-      font-size: 4vw !important;
-  
-      &.activated {
-        background-color: rgb(220, 220, 220);
-      }
+      font-size: 4vh;
     }
   }
+  .button {
+    width: 40vh;
+    margin: auto;
+  }
+
+}
   

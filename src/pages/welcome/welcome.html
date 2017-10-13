@@ -1,25 +1,15 @@
 <ion-content scroll="false">
-  <div class="splash-bg"></div>
-  <div class="splash-info">
-    <div class="splash-logo"></div>
-    <div class="splash-intro">
+
+  <div class="logo">
+    <img src="../assets/img/appicon.png" />
+    <p>
       {{ 'WELCOME_INTRO' | translate }}
-    </div>
+    </p>
   </div>
-  <div padding>
-    <ion-grid>
-      <ion-row> 
-        <ion-col col-4>
-        </ion-col>
-        <ion-col col-34>
-          <button ion-button icon-left block round (click)="signInWithFacebook()" class="signup">
-            <ion-icon name="logo-facebook"></ion-icon>
-            {{ 'LOGIN' | translate }}
-          </button>
-        </ion-col>
-        <ion-col col-4>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+
+  <button ion-button icon-left block round (click)="signInWithFacebook()">
+    <ion-icon name="logo-facebook"></ion-icon>
+    {{ 'LOGIN' | translate }}
+  </button>
+
 </ion-content>

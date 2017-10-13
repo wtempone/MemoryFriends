@@ -2,13 +2,13 @@ end-game {
     .user-info {
         position: relative;
         z-index: 2;
-        margin-top: 20px;
-        margin-bottom: 30px;
+        margin-top: 2vh;
+        margin-bottom: 3vh;
         text-align: center;
         img {
           border-radius: 50%;
-          width: 30vw;
-          height: 30vw;
+          width: 15vh;
+          height: 15vh;
         }
     }
 }
