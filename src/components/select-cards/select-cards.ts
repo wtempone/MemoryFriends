@@ -104,4 +104,5 @@ export class SelectCardsComponent {
     this.doneFired = true;
     this.done.emit(true);
   }
+  
 }

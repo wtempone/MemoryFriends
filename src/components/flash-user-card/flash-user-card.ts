@@ -3,7 +3,7 @@ import { Friend, Card } from './../../providers/database/models/game-session';
 import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  inputs: ['card:card','disabled:disabled'],
+  inputs: ['card:card','disabled:disabled','cols:cols'],
   selector: 'flash-user-card',
   templateUrl: 'flash-user-card.html',
 })

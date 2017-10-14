@@ -1,8 +1,43 @@
-<ion-grid center>
-    <ion-row center>
-        <ion-col col-10 no-padding no-margin text-center *ngFor='let item of gameSession?.cards; let i = index'>
-            <!-- <simple-user-card [user]='card' (selectCard)="select(friend,$event,i)"></simple-user-card> -->
-            <flash-user-card [card]='item' [disabled]="gameSession.playerTurn != currentPlayerIndex" (selectCard)='selectCard($event)'></flash-user-card>
-        </ion-col>
-    </ion-row>
-</ion-grid>
+<div *ngIf="gameSession.numOfCards.cols == 4">
+    <ion-grid center>
+        <ion-row center>
+            <ion-col col-10 no-padding no-margin text-center *ngFor='let item of gameSession?.cards; let i = index'>
+                <flash-user-card [card]='item' [disabled]="gameSession.playerTurn != currentPlayerIndex" [cols]="gameSession.numOfCards.cols"
+                    (selectCard)='selectCard($event)'></flash-user-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>
+
+<div *ngIf="gameSession.numOfCards.cols == 5">
+    <ion-grid center>
+        <ion-row center>
+            <ion-col col-8 no-padding no-margin text-center *ngFor='let item of gameSession?.cards; let i = index'>
+                <flash-user-card [card]='item' [disabled]="gameSession.playerTurn != currentPlayerIndex" [cols]="gameSession.numOfCards.cols"
+                    (selectCard)='selectCard($event)'></flash-user-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>
+
+<div *ngIf="gameSession.numOfCards.cols == 6">
+    <ion-grid center>
+        <ion-row center>
+            <ion-col col-7 no-padding no-margin text-center *ngFor='let item of gameSession?.cards; let i = index'>
+                <flash-user-card [card]='item' [disabled]="gameSession.playerTurn != currentPlayerIndex" [cols]="gameSession.numOfCards.cols"
+                    (selectCard)='selectCard($event)'></flash-user-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>
+
+<div *ngIf="gameSession.numOfCards.cols == 7">
+    <ion-grid center>
+        <ion-row center>
+            <ion-col col-6 no-padding no-margin text-center *ngFor='let item of gameSession?.cards; let i = index'>
+                <flash-user-card [card]='item' [disabled]="gameSession.playerTurn != currentPlayerIndex" [cols]="gameSession.numOfCards.cols"
+                    (selectCard)='selectCard($event)'></flash-user-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>

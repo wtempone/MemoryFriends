@@ -1,4 +1,5 @@
-import { Friend } from './../../providers/database/models/game-session';
+import { User } from './../../providers/database/models/user';
+import { Friend, Photo } from './../../providers/database/models/game-session';
 import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({

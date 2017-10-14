@@ -1,4 +1,4 @@
-<div class="container-card" (click)='select()'>
+<div class="col-height-{{cols}}" (click)='select()'>
   <flash-card [disabled]='(card.flipped || card.resolved || disabled)' [flipped]='card.flipped' >
     <div class="flash-card-front">
       <simple-user-card [user]='placeholder' [disabled]='true'></simple-user-card>

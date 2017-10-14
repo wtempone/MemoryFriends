@@ -26,7 +26,7 @@ export class GameSessionPage {
   waiting: boolean;
   turns: Turn[] = [];
   started: boolean = false;
-  friendsPlaceHolder: Friend[] = [];
+  cardsPlaceHolder: Friend[] = [];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private authServiceProvider: AuthServiceProvider,
@@ -89,9 +89,9 @@ export class GameSessionPage {
 
   setNumCard(numCards: NumCards) {
     this.numCards = numCards;
-    this.friendsPlaceHolder = [];
+    this.cardsPlaceHolder = [];
     for (var i = 0; i < (numCards.numCards / 4); i++) {
-      this.friendsPlaceHolder.push({
+      this.cardsPlaceHolder.push({
         id: '0',
         name: ' ',
         picture: ' '
@@ -99,7 +99,7 @@ export class GameSessionPage {
 
     }
 
-    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/friendsPlaceHolder`, this.friendsPlaceHolder);
+    this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cardsPlaceHolder`, this.cardsPlaceHolder);
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/numOfCards`, numCards);
     this.gameSessionSrvc.setValue(`${this.gameSessionKey}/step`, Steps.SelectCard);
   }

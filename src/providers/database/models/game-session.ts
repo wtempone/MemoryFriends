@@ -7,6 +7,13 @@ export interface Friend{
     selected?:boolean;
 }
 
+export interface Photo {
+    id:string;
+    picture:string;
+    selected?:boolean;
+}
+
+
 export class Player {
     score : number;
     wins?: number;
@@ -20,7 +27,7 @@ export class Player {
 
 export interface Card {
     ind : number;
-    card : Friend;
+    card : Photo;
     flipped?: boolean;
     resolved?: boolean;
 }
@@ -59,7 +66,7 @@ export class GameSession {
     numOfCards? : NumCards;
     cards? : Card[];
     messages? : Message[];
-    friendsPlaceHolder: Friend[];
+    cardsPlaceHolder: Friend[];
     winners?:Player[];
     constructor() {
         this.step = Steps.ConfigNumCards;

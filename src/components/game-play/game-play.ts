@@ -25,9 +25,10 @@ export class GamePlayComponent {
     public userSrvc: UserService,
     public authSrvc: AuthServiceProvider
   ) {
+
   }
   selectCard(card: Card) {
-
+    
     setTimeout(() => {
       card.flipped = !card.flipped;
       this.gameSessionSrvc.setValue(`${this.gameSessionKey}/cards/${card.ind}`, card)

@@ -15,7 +15,6 @@ export class GameSessionService {
     { numCards: 12, rows: 3, cols: 4 },
     { numCards: 16, rows: 4, cols: 4 },
     { numCards: 20, rows: 4, cols: 5 },
-    { numCards: 30, rows: 5, cols: 6 },
     { numCards: 36, rows: 6, cols: 6 },
     { numCards: 42, rows: 6, cols: 7 },
   ]
