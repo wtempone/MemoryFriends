@@ -1,5 +1,5 @@
 import { AuthServiceProvider } from './../../auth-service';
-import { Friend } from './../models/game-session';
+import { Friend, Photo } from './../models/game-session';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from "angularfire2/database";
 import { User, Invite, GameSession, Player } from '../database-providers';
@@ -13,6 +13,7 @@ export class UserService {
   data: any;
   currentUser: User;
   friends: Friend[] = [];
+  photos: Photo[] = [];
   constructor(
     private db: AngularFireDatabase,
     private toast: ToastController,
@@ -28,15 +29,28 @@ export class UserService {
   loadFriends() {
 
     this.friends = [];
-    
+
     this.authSrvc.getFriends().then((res: any) => {
       let friends = res.data;
       friends.forEach(friend => {
         this.authSrvc.getUser(friend.id).then(user => this.friends.push(<Friend>user))
       })
     })
-  
-  } 
+
+  }
+
+  loadPhotos() {
+
+    this.photos = [];
+
+    this.authSrvc.getPhotos().then((res: any) => {
+      let photos = res.data;
+      photos.forEach(photo => {
+        this.photos.push(<Photo>photo)
+      })
+    })
+
+  }
   getList(query = {}) {
     return this.db.list(this.basePath);
   }
@@ -139,10 +153,10 @@ export class UserService {
                       data => {
                         let gameSession: GameSession = data;
                         var player = <Player>{
-                          score:0,
+                          score: 0,
                           user: this.currentUser
                         }
-                              gameSession.players.push(player);
+                        gameSession.players.push(player);
                         let keyParse: any = gameSession;
                         this.gameSessionSrvc.set(keyParse.$key, gameSession).then(
                           () => {
@@ -153,10 +167,10 @@ export class UserService {
                               confirm: true
                             };
                             this.sendEnvite(inviteResponse)
-                            .then(()=>{
-                              this.app.getRootNav().push('GameSessionPage', invite.gameSessionId);                              
-                            })
-                            .catch(error => this.handleError(error));                            
+                              .then(() => {
+                                this.app.getRootNav().push('GameSessionPage', invite.gameSessionId);
+                              })
+                              .catch(error => this.handleError(error));
                           }
                         ).catch(error => this.handleError(error));
                       }

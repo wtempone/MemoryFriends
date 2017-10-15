@@ -1,4 +1,4 @@
-import { GameSession, Friend } from './../../providers/database/models/game-session';
+import { GameSession, Friend, Photo } from './../../providers/database/models/game-session';
 import { AuthServiceProvider } from './../../providers/auth-service';
 import { UserService } from './../../providers/database/services/user-service';
 import { GameSessionService } from './../../providers/database/services/game-session-service';
@@ -13,6 +13,7 @@ export class SelectCardsComponent {
   @Output() done = new EventEmitter();
 
   friends: Friend[] = [];
+  photos: Photo[] = [];
   selectedCards = []
   currentPlayerIndex: number;
   gameSession: GameSession;
@@ -34,6 +35,9 @@ export class SelectCardsComponent {
   load() {
     this.userSrvc.loadFriends();
     this.friends = this.userSrvc.friends;
+    
+    // this.userSrvc.loadPhotos();
+    // this.photos = this.userSrvc.photos;
   }
 
   cardSelected(card: Friend): boolean {
@@ -104,5 +108,5 @@ export class SelectCardsComponent {
     this.doneFired = true;
     this.done.emit(true);
   }
-  
+
 }

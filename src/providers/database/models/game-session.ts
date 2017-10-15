@@ -10,9 +10,15 @@ export interface Friend{
 export interface Photo {
     id:string;
     picture:string;
+    images:Image[];
     selected?:boolean;
 }
 
+export interface Image{
+    height: number;
+    source: string;
+    width: number;    
+}
 
 export class Player {
     score : number;

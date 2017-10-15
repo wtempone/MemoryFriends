@@ -82,6 +82,10 @@ export class AuthServiceProvider {
     return this.callFacebookApi('me/friends');
   }
 
+  getPhotos() {
+    return this.callFacebookApi('me?fields=photos{id,picture,name, images}');
+  }
+
   getUser(id) {
     return new Promise(
       resolve => {
